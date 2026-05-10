@@ -105,6 +105,7 @@ export default function SettingsPage() {
             return (
               <button
                 key={tab.id}
+                type="button"
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                   isActive 
@@ -130,9 +131,10 @@ export default function SettingsPage() {
               transition={{ duration: 0.2 }}
             >
               {activeTab === "general" && (
-                <div className="space-y-8">
+                <div className="space-y-10">
+                  {/* Basic Info Section */}
                   <div className="space-y-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-6">Thông tin cơ bản</h3>
+                    <h3 className="text-xl font-bold text-gray-900">Thông tin cơ bản</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-sm font-semibold text-gray-700">Tên Agency</label>
@@ -170,8 +172,9 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-6 pt-6 border-t border-gray-50">
-                    <h4 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Thương hiệu (Branding)</h4>
+                  {/* Branding Section */}
+                  <div className="space-y-6 pt-8 border-t border-gray-50">
+                    <h3 className="text-xl font-bold text-gray-900">Thương hiệu (Branding)</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                       <div className="space-y-4">
                         <label className="text-sm font-semibold text-gray-700">Logo chính</label>
@@ -182,7 +185,7 @@ export default function SettingsPage() {
                         />
                       </div>
                       <div className="space-y-4">
-                        <label className="text-sm font-semibold text-gray-700">Logo Footer (Chân trang)</label>
+                        <label className="text-sm font-semibold text-gray-700">Logo Footer</label>
                         <ImageUpload 
                           value={settings.general.footer_logo_url}
                           onChange={(url) => updateField("general", "footer_logo_url", url)}
@@ -190,35 +193,40 @@ export default function SettingsPage() {
                         />
                       </div>
                       <div className="space-y-4">
-                        <label className="text-sm font-semibold text-gray-700">Favicon (Tab trình duyệt)</label>
+                        <label className="text-sm font-semibold text-gray-700">Favicon</label>
                         <ImageUpload 
                           value={settings.general.favicon_url}
                           onChange={(url) => updateField("general", "favicon_url", url)}
                           folder="branding"
                         />
-                        <p className="text-[10px] text-gray-400 italic">Gợi ý: Dùng ảnh vuông .png hoặc .ico (32x32px).</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-gray-700">Địa chỉ văn phòng</label>
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-3 text-gray-400" size={16} />
-                      <textarea 
-                        rows={3}
-                        value={settings.general.address}
-                        onChange={(e) => updateField("general", "address", e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 transition-all outline-none resize-none"
-                      ></textarea>
+                  {/* Address Section */}
+                  <div className="space-y-6 pt-8 border-t border-gray-50">
+                    <h3 className="text-xl font-bold text-gray-900">Địa chỉ & Liên hệ</h3>
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-gray-700">Địa chỉ văn phòng</label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 text-gray-400" size={16} />
+                        <textarea 
+                          rows={3}
+                          value={settings.general.address}
+                          onChange={(e) => updateField("general", "address", e.target.value)}
+                          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 transition-all outline-none resize-none"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
-                  <div className="pt-6 border-t border-gray-50 flex justify-end">
+
+                  {/* Save Button */}
+                  <div className="pt-6 border-t border-gray-100 flex justify-end">
                     <button 
                       type="button"
                       onClick={() => handleSave("general")}
                       disabled={saving}
-                      className="flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-all disabled:opacity-50"
+                      className="flex items-center gap-2 px-8 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all disabled:opacity-50 shadow-lg shadow-gray-900/10"
                     >
                       {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={18} />}
                       Lưu thay đổi
@@ -229,62 +237,34 @@ export default function SettingsPage() {
 
               {activeTab === "social" && (
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">Liên kết mạng xã hội</h3>
+                  <h3 className="text-xl font-bold text-gray-900">Liên kết mạng xã hội</h3>
                   <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <Link2 size={20} />
+                    {[
+                      { key: "facebook", label: "Facebook", color: "bg-blue-50 text-blue-600" },
+                      { key: "instagram", label: "Instagram", color: "bg-pink-50 text-pink-600" },
+                      { key: "linkedin", label: "LinkedIn", color: "bg-blue-100 text-blue-700" },
+                      { key: "youtube", label: "YouTube", color: "bg-red-50 text-red-600" }
+                    ].map((item) => (
+                      <div key={item.key} className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center shrink-0`}>
+                          <Link2 size={20} />
+                        </div>
+                        <input 
+                          type="text"
+                          placeholder={`${item.label} URL`}
+                          value={settings.social[item.key]}
+                          onChange={(e) => updateField("social", item.key, e.target.value)}
+                          className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none"
+                        />
                       </div>
-                      <input 
-                        type="text"
-                        placeholder="Facebook URL"
-                        value={settings.social.facebook}
-                        onChange={(e) => updateField("social", "facebook", e.target.value)}
-                        className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none"
-                      />
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center shrink-0">
-                        <Link2 size={20} />
-                      </div>
-                      <input 
-                        type="text"
-                        placeholder="Instagram URL"
-                        value={settings.social.instagram}
-                        onChange={(e) => updateField("social", "instagram", e.target.value)}
-                        className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none"
-                      />
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-                        <Link2 size={20} />
-                      </div>
-                      <input 
-                        type="text"
-                        placeholder="LinkedIn URL"
-                        value={settings.social.linkedin}
-                        onChange={(e) => updateField("social", "linkedin", e.target.value)}
-                        className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none"
-                      />
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
-                        <Link2 size={20} />
-                      </div>
-                      <input 
-                        type="text"
-                        placeholder="YouTube URL"
-                        value={settings.social.youtube}
-                        onChange={(e) => updateField("social", "youtube", e.target.value)}
-                        className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none"
-                      />
-                    </div>
+                    ))}
                   </div>
                   <div className="pt-6 border-t border-gray-50 flex justify-end">
                     <button 
+                      type="button"
                       onClick={() => handleSave("social")}
                       disabled={saving}
-                      className="flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-all disabled:opacity-50"
+                      className="flex items-center gap-2 px-8 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all disabled:opacity-50"
                     >
                       {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={18} />}
                       Lưu mạng xã hội
@@ -295,10 +275,10 @@ export default function SettingsPage() {
 
               {activeTab === "seo" && (
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">Tối ưu hóa tìm kiếm (SEO)</h3>
+                  <h3 className="text-xl font-bold text-gray-900">SEO & Meta Tags</h3>
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700">Tiêu đề Trang chủ (Meta Title)</label>
+                      <label className="text-sm font-semibold text-gray-700">Tiêu đề Trang chủ</label>
                       <input 
                         type="text"
                         value={settings.seo.meta_title}
@@ -307,7 +287,7 @@ export default function SettingsPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700">Mô tả Trang chủ (Meta Description)</label>
+                      <label className="text-sm font-semibold text-gray-700">Mô tả Trang chủ</label>
                       <textarea 
                         rows={4}
                         value={settings.seo.meta_description}
@@ -318,9 +298,10 @@ export default function SettingsPage() {
                   </div>
                   <div className="pt-6 border-t border-gray-50 flex justify-end">
                     <button 
+                      type="button"
                       onClick={() => handleSave("seo")}
                       disabled={saving}
-                      className="flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-all disabled:opacity-50"
+                      className="flex items-center gap-2 px-8 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all disabled:opacity-50"
                     >
                       {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={18} />}
                       Lưu cấu hình SEO
@@ -331,7 +312,7 @@ export default function SettingsPage() {
 
               {activeTab === "security" && (
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">Bảo mật tài khoản</h3>
+                  <h3 className="text-xl font-bold text-gray-900">Bảo mật tài khoản</h3>
                   <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 flex gap-4">
                     <div className="shrink-0 text-blue-500">
                       <CheckCircle2 size={24} />
@@ -339,7 +320,7 @@ export default function SettingsPage() {
                     <div>
                       <p className="text-sm font-bold text-blue-900 mb-1">Xác thực an toàn</p>
                       <p className="text-sm text-blue-700">
-                        Tài khoản của bạn được bảo vệ bởi Supabase Auth. Để thay đổi mật khẩu hoặc quản lý quyền truy cập, vui lòng truy cập Supabase Dashboard.
+                        Tài khoản của bạn được bảo vệ bởi Supabase Auth. Để thay đổi mật khẩu, vui lòng truy cập Supabase Dashboard.
                       </p>
                     </div>
                   </div>
