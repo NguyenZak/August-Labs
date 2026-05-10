@@ -39,3 +39,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Next Steps
 - Run `/plan` to design the first feature.
 - Run `/visualize` if you want to focus on the UI/UX first.
+# August-Labs
