@@ -17,7 +17,6 @@ export default function NewProjectPage() {
   const [formData, setFormData] = useState({
     client: "",
     slug: "",
-    subdomain: "",
     category: "Restaurant Chains",
     title_en: "",
     title_vi: "",
@@ -48,9 +47,6 @@ export default function NewProjectPage() {
         if (!prev.slug || prev.slug === slugify(prev.client)) {
           newData.slug = newSlug;
         }
-        if (!prev.subdomain || prev.subdomain === slugify(prev.client)) {
-          newData.subdomain = newSlug;
-        }
       }
       return newData;
     });
@@ -72,7 +68,7 @@ export default function NewProjectPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.client || !formData.slug || !formData.subdomain) {
+    if (!formData.client || !formData.slug) {
       toast("Vui lòng điền đầy đủ các thông tin bắt buộc!", "error");
       return;
     }
@@ -136,19 +132,12 @@ export default function NewProjectPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-700">Đường dẫn Project (Slug) *</label>
                 <div className="relative">
                   <input required name="slug" value={formData.slug} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-sm" />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] font-bold uppercase">/projects/[slug]</div>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Microsite Subdomain *</label>
-                <div className="relative">
-                  <input required name="subdomain" value={formData.subdomain} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50 font-mono text-sm" />
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium">.augustagency.com</div>
                 </div>
               </div>
             </div>

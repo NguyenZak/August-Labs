@@ -266,26 +266,6 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700">Microsite Subdomain *</label>
-                <div className="relative">
-                  <input required name="subdomain" value={formData.subdomain} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50 font-mono text-sm" />
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium">
-                    .augustagency.com
-                  </div>
-                </div>
-                <div className="flex items-center justify-between px-1">
-                  <p className="text-[10px] text-gray-400 italic">Tên miền phụ dành riêng cho nhà hàng.</p>
-                  <a 
-                    href={`http://${formData.subdomain}.localhost:3000`} 
-                    target="_blank" 
-                    className="text-[10px] font-bold text-pink-500 hover:underline flex items-center gap-1"
-                  >
-                    Xem Microsite
-                    <Sparkles size={10} />
-                  </a>
-                </div>
-              </div>
-              <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-700">Lĩnh vực (Category) *</label>
                 <select required name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50 appearance-none">
                   <option value="Restaurant Chains">Chuỗi nhà hàng</option>
