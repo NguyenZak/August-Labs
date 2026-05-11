@@ -7,8 +7,10 @@ import { useEffect, useState } from "react";
 
 export default function NotFound() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({ x: e.clientX, y: e.clientY });
     };
@@ -28,7 +30,7 @@ export default function NotFound() {
 
       {/* Floating Chaos Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {mounted && [...Array(20)].map((_, i) => (
           <motion.div
             key={i}
             initial={{ 
