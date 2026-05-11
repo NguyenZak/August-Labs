@@ -65,6 +65,22 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     fetchSettings();
   }, []);
 
+  useEffect(() => {
+    if (settings.general?.favicon_url) {
+      const link: HTMLLinkElement = document.querySelector("link[rel*='icon']") || document.createElement('link');
+      link.type = 'image/x-icon';
+      link.rel = 'shortcut icon';
+      link.href = settings.general.favicon_url;
+      document.getElementsByTagName('head')[0].appendChild(link);
+    }
+    
+    if (settings.seo?.meta_title) {
+      document.title = settings.seo.meta_title;
+    } else if (settings.general?.agency_name) {
+      document.title = `${settings.general.agency_name} | Premium Digital Experiences`;
+    }
+  }, [settings.general?.favicon_url, settings.seo?.meta_title, settings.general?.agency_name]);
+
   return (
     <SettingsContext.Provider value={settings}>
       {children}
