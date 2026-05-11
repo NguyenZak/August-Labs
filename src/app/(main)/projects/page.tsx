@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2, Utensils } from "lucide-react";
+import BookingModal from "@/components/ui/BookingModal";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
@@ -14,6 +15,8 @@ export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [projects, setProjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -129,11 +132,25 @@ export default function ProjectsPage() {
                       </div>
                     </div>
 
-                    <div className="px-2">
-                      <p className="text-sm text-pink-500 font-semibold mb-2">{project.category}</p>
-                      <h3 className="text-2xl font-headline text-gray-900 group-hover:text-pink-500 transition-colors">
-                        {lang === 'en' ? project.title_en : project.title_vi}
-                      </h3>
+                    <div className="px-2 flex items-start justify-between">
+                      <div className="flex-1">
+                        <p className="text-sm text-pink-500 font-semibold mb-2">{project.category}</p>
+                        <h3 className="text-2xl font-headline text-gray-900 group-hover:text-pink-500 transition-colors">
+                          {lang === 'en' ? project.title_en : project.title_vi}
+                        </h3>
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setSelectedProject(project);
+                          setIsBookingOpen(true);
+                        }}
+                        className="mt-1 flex items-center gap-2 bg-gray-50 text-gray-900 px-4 py-2 rounded-full text-xs font-bold hover:bg-pink-500 hover:text-white transition-all transform active:scale-95 border border-gray-100"
+                      >
+                        <Utensils size={14} />
+                        {lang === 'en' ? 'Book' : 'Đặt bàn'}
+                      </button>
                     </div>
                   </motion.div>
                 </Link>
@@ -142,6 +159,17 @@ export default function ProjectsPage() {
           )}
         </motion.div>
       </div>
+
+      {selectedProject && (
+        <BookingModal 
+          isOpen={isBookingOpen}
+          onClose={() => setIsBookingOpen(false)}
+          project={{
+            id: selectedProject.id,
+            client: selectedProject.client
+          }}
+        />
+      )}
     </main>
   );
 }

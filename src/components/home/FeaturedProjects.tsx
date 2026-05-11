@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useState } from "react";
+import BookingModal from "@/components/ui/BookingModal";
+import { Utensils } from "lucide-react";
 
 const cases = [
   {
@@ -25,7 +28,9 @@ const cases = [
 ];
 
 export default function FeaturedProjects() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   return (
     <section className="py-24 bg-white">
@@ -80,14 +85,46 @@ export default function FeaturedProjects() {
                   </div>
                 </div>
               </div>
-              <p className="text-sm text-gray-500 font-medium mb-2">{project.category}</p>
-              <h3 className="text-2xl font-headline text-gray-900 group-hover:text-pink-500 transition-colors">
-                {project.title}
-              </h3>
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm text-gray-500 font-medium mb-2">{project.category}</p>
+                  <h3 className="text-2xl font-headline text-gray-900 group-hover:text-pink-500 transition-colors">
+                    {project.title}
+                  </h3>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // For hardcoded projects, we use the ID from the object or a fallback
+                    // In a real scenario, these would come from DB
+                    setSelectedProject({
+                      id: project.id === 'miyako' ? 'miyako-uuid' : project.id, // Fallback placeholder
+                      client: project.client
+                    });
+                    setIsBookingOpen(true);
+                  }}
+                  className="mt-1 flex items-center gap-2 bg-gray-50 text-gray-900 px-4 py-2 rounded-full text-xs font-bold hover:bg-pink-500 hover:text-white transition-all transform active:scale-95 border border-gray-100"
+                >
+                  <Utensils size={14} />
+                  {lang === 'en' ? 'Book' : 'Đặt bàn'}
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {selectedProject && (
+        <BookingModal 
+          isOpen={isBookingOpen}
+          onClose={() => setIsBookingOpen(false)}
+          project={{
+            id: selectedProject.id,
+            client: selectedProject.client
+          }}
+        />
+      )}
     </section>
   );
 }
