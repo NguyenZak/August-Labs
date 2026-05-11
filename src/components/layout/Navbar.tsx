@@ -38,7 +38,7 @@ export default function Navbar() {
                 src={general.logo_url} 
                 alt={general.agency_name} 
                 style={{ width: 'auto' }}
-                className="h-8 md:h-10 max-w-[200px] object-contain block shrink-0 border border-red-500"
+                className="h-8 md:h-10 max-w-[200px] object-contain block shrink-0"
               />
             ) : null
           ) : (
