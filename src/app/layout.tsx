@@ -38,6 +38,7 @@ import { ToastProvider } from "@/context/ToastContext";
 import { SettingsProvider } from "@/lib/context/SettingsContext";
 
 import { getAllSettings } from "@/app/actions/settings";
+import AnalyticsTracker from "@/components/layout/AnalyticsTracker";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getAllSettings();
@@ -71,6 +72,7 @@ export default function RootLayout({
     >
       <body className={`${instagramSans.className} min-h-full flex flex-col bg-background text-foreground`}>
         <SettingsProvider>
+          <AnalyticsTracker />
           <LanguageProvider>
             <ToastProvider>
               {children}
