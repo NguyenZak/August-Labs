@@ -242,10 +242,11 @@ export default function BookingPortalPage() {
                     </div>
 
                     {/* Booking Details */}
-                    <div className="space-y-6 pt-4">
+                    <div className="space-y-12 pt-4">
                       <h3 className="text-xs font-bold text-pink-500 uppercase tracking-widest border-b border-gray-100 pb-2">Chi tiết đặt chỗ</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-4">
+                      
+                      {/* Date Section */}
+                      <div className="space-y-4">
                           <label className="text-sm font-bold text-gray-400">Chọn ngày đến *</label>
                           
                           <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
