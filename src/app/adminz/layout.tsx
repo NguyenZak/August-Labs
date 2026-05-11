@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, FolderKanban, FileText, Settings, LogOut, Menu, MousePointerClick, Image as ImageIcon } from "lucide-react";
+import { LayoutDashboard, Users, FolderKanban, FileText, Settings, LogOut, Menu, MousePointerClick, Image as ImageIcon, Utensils } from "lucide-react";
 import { motion } from "framer-motion";
 import { createClient } from "@/utils/supabase/client";
 
@@ -55,6 +55,7 @@ export default function PortalLayout({
     { name: "Trang chủ (Hero)", href: "/adminz/hero", icon: FileText },
     { name: "Dự án (Projects)", href: "/adminz/projects", icon: FolderKanban },
     { name: "Tạp chí (Magazine)", href: "/adminz/magazine", icon: FileText },
+    { name: "Đặt bàn (Bookings)", href: "/adminz/bookings", icon: Utensils },
     { name: "Cài đặt", href: "/adminz/settings", icon: Settings },
   ];
 
