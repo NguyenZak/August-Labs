@@ -45,6 +45,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
     stat3_val: project.stat3_val || "",
     stat3_label_en: project.stat3_label_en || "",
     stat3_label_vi: project.stat3_label_vi || "",
+    booking_url: project.booking_url || "",
     menu_images: project.menu_images || []
   });
 
@@ -294,6 +295,13 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                   </button>
                 </div>
                 <input required name="title_en" value={formData.title_en} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Link Đặt bàn (Booking URL)</label>
+                <input name="booking_url" value={formData.booking_url} onChange={handleChange} placeholder="https://..." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
               </div>
             </div>
 
