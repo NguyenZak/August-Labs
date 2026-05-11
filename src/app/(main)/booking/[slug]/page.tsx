@@ -64,6 +64,9 @@ export default function BookingPortalPage() {
     setQuickDates(dates);
   }, []);
 
+  const lunchSlots = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00"];
+  const dinnerSlots = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
+
   useEffect(() => {
     const fetchProject = async () => {
       const supabase = createClient();
@@ -297,30 +300,54 @@ export default function BookingPortalPage() {
                             </motion.div>
                           )}
                         </div>
-                        <div className="space-y-4">
+                        <div className="space-y-6">
                           <label className="text-sm font-bold text-gray-400">Chọn giờ đến *</label>
                           
-                          <div className="flex overflow-x-auto pb-2 gap-2 custom-scrollbar no-scrollbar">
-                            {["10:00", "11:00", "12:00", "18:00", "19:00", "20:00", "21:00"].map((time) => (
-                              <button
-                                key={time}
-                                type="button"
-                                onClick={() => {
-                                  setFormData({ ...formData, booking_time: time });
-                                  // We don't hide the custom picker here, just set the value
-                                }}
-                                className={`px-5 py-3 rounded-2xl text-sm font-bold border transition-all whitespace-nowrap ${
-                                  formData.booking_time === time
-                                    ? "bg-pink-500 border-pink-500 text-white shadow-lg shadow-pink-200"
-                                    : "bg-gray-50 border-gray-100 text-gray-600 hover:border-pink-200"
-                                }`}
-                              >
-                                {time}
-                              </button>
-                            ))}
+                          <div className="space-y-4">
+                            {/* Lunch Slots */}
+                            <div className="space-y-2">
+                              <div className="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-1">Buổi trưa</div>
+                              <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
+                                {lunchSlots.map((time) => (
+                                  <button
+                                    key={time}
+                                    type="button"
+                                    onClick={() => setFormData({ ...formData, booking_time: time })}
+                                    className={`px-5 py-3 rounded-2xl text-sm font-bold border transition-all whitespace-nowrap ${
+                                      formData.booking_time === time
+                                        ? "bg-pink-500 border-pink-500 text-white shadow-lg shadow-pink-200"
+                                        : "bg-gray-50 border-gray-100 text-gray-600 hover:border-pink-200"
+                                    }`}
+                                  >
+                                    {time}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Dinner Slots */}
+                            <div className="space-y-2">
+                              <div className="text-[10px] uppercase font-bold text-gray-400 tracking-widest ml-1">Buổi tối</div>
+                              <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
+                                {dinnerSlots.map((time) => (
+                                  <button
+                                    key={time}
+                                    type="button"
+                                    onClick={() => setFormData({ ...formData, booking_time: time })}
+                                    className={`px-5 py-3 rounded-2xl text-sm font-bold border transition-all whitespace-nowrap ${
+                                      formData.booking_time === time
+                                        ? "bg-pink-500 border-pink-500 text-white shadow-lg shadow-pink-200"
+                                        : "bg-gray-50 border-gray-100 text-gray-600 hover:border-pink-200"
+                                    }`}
+                                  >
+                                    {time}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
                           </div>
 
-                          <div className="relative group">
+                          <div className="relative group pt-2">
                             <Clock className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-pink-500 transition-colors" size={20} />
                             <input 
                               required
