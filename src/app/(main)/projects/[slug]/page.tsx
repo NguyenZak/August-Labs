@@ -61,14 +61,20 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative h-[80vh] w-full overflow-hidden">
-        <motion.img 
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5 }}
-          src={project.image_url} 
-          alt={project.client}
-          className="w-full h-full object-cover"
-        />
+        {project.image_url ? (
+          <motion.img 
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5 }}
+            src={project.image_url} 
+            alt={project.client}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-900 flex items-center justify-center text-gray-500">
+            No Header Image
+          </div>
+        )}
         <div className="absolute inset-0 bg-black/40" />
         
         <div className="absolute inset-0 flex items-end">
@@ -175,11 +181,17 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
               </div>
 
               <div className="rounded-[40px] overflow-hidden bg-gray-50 aspect-video shadow-2xl">
-                <img 
-                  src={project.image_url} 
-                  alt="Project Detail"
-                  className="w-full h-full object-cover"
-                />
+                {project.image_url ? (
+                  <img 
+                    src={project.image_url} 
+                    alt="Project Detail"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    Image Unavailable
+                  </div>
+                )}
               </div>
 
               <div className="space-y-8">
@@ -251,7 +263,13 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
             {related?.map((item) => (
               <Link key={item.id} href={`/projects/${item.slug}`} className="group block">
                 <div className={`relative aspect-[16/9] rounded-[32px] overflow-hidden mb-6 ${item.bg_color}`}>
-                  <img src={item.image_url} alt={item.client} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  {item.image_url ? (
+                    <img src={item.image_url} alt={item.client} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      No Image
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                 </div>
                 <h3 className="text-2xl font-headline text-gray-900 group-hover:text-pink-500 transition-colors">{item.client}</h3>

@@ -98,11 +98,17 @@ export default function ProjectsPage() {
                     className="group cursor-pointer"
                   >
                     <div className={`relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6 ${project.bg_color || 'bg-gray-100'}`}>
-                      <img 
-                        src={project.image_url} 
-                        alt={project.client} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+                      {project.image_url ? (
+                        <img 
+                          src={project.image_url} 
+                          alt={project.client} 
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          No Image
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
                       
                       {/* Top Tags */}

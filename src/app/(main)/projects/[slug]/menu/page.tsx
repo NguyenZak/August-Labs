@@ -88,11 +88,17 @@ export default function ProjectMenuPage({ params }: { params: { slug: string } }
             className="relative group"
           >
             <div className="bg-white rounded-[32px] overflow-hidden shadow-sm border border-gray-100 transition-shadow hover:shadow-2xl">
-              <img 
-                src={image} 
-                alt={`${project.client} Menu Page ${index + 1}`}
-                className="w-full h-auto object-contain"
-              />
+              {image ? (
+                <img 
+                  src={image} 
+                  alt={`${project.client} Menu Page ${index + 1}`}
+                  className="w-full h-auto object-contain"
+                />
+              ) : (
+                <div className="aspect-[3/4] bg-gray-100 flex items-center justify-center text-gray-400">
+                  Image Missing
+                </div>
+              )}
             </div>
             
             {/* Page Indicator */}
