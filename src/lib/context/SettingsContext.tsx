@@ -67,11 +67,22 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (settings.general?.favicon_url) {
-      const link: HTMLLinkElement = document.querySelector("link[rel*='icon']") || document.createElement('link');
+      // Remove existing favicons
+      const existingIcons = document.querySelectorAll("link[rel*='icon']");
+      existingIcons.forEach(el => el.parentNode?.removeChild(el));
+
+      // Add new favicon
+      const link = document.createElement('link');
       link.type = 'image/x-icon';
-      link.rel = 'shortcut icon';
+      link.rel = 'icon';
       link.href = settings.general.favicon_url;
-      document.getElementsByTagName('head')[0].appendChild(link);
+      document.head.appendChild(link);
+
+      // Add shortcut icon for older browsers
+      const shortcutLink = document.createElement('link');
+      shortcutLink.rel = 'shortcut icon';
+      shortcutLink.href = settings.general.favicon_url;
+      document.head.appendChild(shortcutLink);
     }
     
     if (settings.seo?.meta_title) {
