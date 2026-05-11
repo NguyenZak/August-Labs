@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { ArrowLeft, Calendar, Tag, ExternalLink, ArrowRight, Loader2, Image as ImageIcon, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ExternalLink, ArrowRight, Loader2, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function ProjectDetailPage({ params }: { params: { slug: string } }) {
   const [project, setProject] = useState<any>(null);
   const [related, setRelated] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentMenuIndex, setCurrentMenuIndex] = useState(0);
   const { lang } = useLanguage();
 
   useEffect(() => {
@@ -151,13 +149,13 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
                 </button>
                 
                 {project.menu_images && project.menu_images.length > 0 && (
-                  <button 
-                    onClick={() => setIsMenuOpen(true)}
+                  <Link 
+                    href={`/projects/${project.slug}/menu`}
                     className="flex items-center gap-3 bg-pink-50 text-pink-600 px-8 py-4 rounded-full font-bold hover:bg-pink-100 transition-all transform hover:scale-105 active:scale-95 border border-pink-100"
                   >
                     {lang === 'en' ? 'View Menu' : 'Xem Menu'}
                     <ImageIcon size={18} />
-                  </button>
+                  </Link>
                 )}
               </div>
             </div>
@@ -263,63 +261,6 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
           </div>
         </div>
       </section>
-      {/* Menu Lightbox */}
-      <AnimatePresence>
-        {isMenuOpen && project.menu_images && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 md:p-10"
-          >
-            <button 
-              onClick={() => setIsMenuOpen(false)}
-              className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors p-2"
-            >
-              <X size={32} />
-            </button>
-
-            <div className="relative w-full max-w-4xl h-full flex items-center justify-center">
-              <motion.img 
-                key={currentMenuIndex}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                src={project.menu_images[currentMenuIndex]} 
-                className="max-w-full max-h-full object-contain shadow-2xl rounded-lg"
-              />
-
-              {project.menu_images.length > 1 && (
-                <>
-                  <button 
-                    onClick={() => setCurrentMenuIndex((prev) => (prev > 0 ? prev - 1 : project.menu_images.length - 1))}
-                    className="absolute left-0 p-4 text-white/50 hover:text-white transition-colors"
-                  >
-                    <ChevronLeft size={48} />
-                  </button>
-                  <button 
-                    onClick={() => setCurrentMenuIndex((prev) => (prev < project.menu_images.length - 1 ? prev + 1 : 0))}
-                    className="absolute right-0 p-4 text-white/50 hover:text-white transition-colors"
-                  >
-                    <ChevronRight size={48} />
-                  </button>
-                </>
-              )}
-            </div>
-
-            <div className="mt-8 flex gap-2 overflow-x-auto p-2">
-              {project.menu_images.map((img: string, idx: number) => (
-                <button 
-                  key={idx}
-                  onClick={() => setCurrentMenuIndex(idx)}
-                  className={`relative w-16 h-20 rounded-lg overflow-hidden border-2 transition-all ${idx === currentMenuIndex ? 'border-pink-500 scale-110' : 'border-transparent opacity-50'}`}
-                >
-                  <img src={img} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </main>
   );
 }
