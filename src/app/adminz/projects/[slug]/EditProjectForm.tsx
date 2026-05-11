@@ -334,7 +334,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-xs font-mono"
                   rows={2}
                 />
-                <p className="text-[10px] text-gray-400">Gợi ý: Chỉ lấy phần src trong mã nhúng <iframe> của Google Maps.</p>
+                <p className="text-[10px] text-gray-400">Gợi ý: Chỉ lấy phần src trong mã nhúng &lt;iframe&gt; của Google Maps.</p>
               </div>
             </div>
             <div className="pt-4 space-y-4">
