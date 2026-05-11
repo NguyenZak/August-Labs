@@ -6,13 +6,11 @@ import { ArrowLeft, ExternalLink, ArrowRight, Loader2, Image as ImageIcon, Utens
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import BookingModal from "@/components/ui/BookingModal";
 
 export default function ProjectDetailPage({ params }: { params: { slug: string } }) {
   const [project, setProject] = useState<any>(null);
   const [related, setRelated] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const { lang } = useLanguage();
 
   useEffect(() => {
@@ -156,13 +154,13 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
                   <ExternalLink size={18} />
                 </button>
                 
-                <button 
-                  onClick={() => setIsBookingOpen(true)}
+                <Link 
+                  href={`/booking/${project.slug}`}
                   className="flex items-center gap-3 bg-pink-500 text-white px-8 py-4 rounded-full font-bold hover:bg-pink-600 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-pink-200"
                 >
                   {lang === 'en' ? 'Book a Table' : 'Đặt bàn ngay'}
                   <Utensils size={18} />
-                </button>
+                </Link>
 
                 {project.menu_images && project.menu_images.length > 0 && (
                   <Link 
@@ -289,15 +287,6 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
           </div>
         </div>
       </section>
-
-      <BookingModal 
-        isOpen={isBookingOpen}
-        onClose={() => setIsBookingOpen(false)}
-        project={{
-          id: project.id,
-          client: project.client
-        }}
-      />
     </main>
   );
 }

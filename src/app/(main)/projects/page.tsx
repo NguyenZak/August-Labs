@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Loader2, Utensils } from "lucide-react";
-import BookingModal from "@/components/ui/BookingModal";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
@@ -15,8 +14,6 @@ export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [projects, setProjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedProject, setSelectedProject] = useState<any>(null);
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -139,18 +136,13 @@ export default function ProjectsPage() {
                           {lang === 'en' ? project.title_en : project.title_vi}
                         </h3>
                       </div>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setSelectedProject(project);
-                          setIsBookingOpen(true);
-                        }}
+                      <Link
+                        href={`/booking/${project.slug}`}
                         className="mt-1 flex items-center gap-2 bg-gray-50 text-gray-900 px-4 py-2 rounded-full text-xs font-bold hover:bg-pink-500 hover:text-white transition-all transform active:scale-95 border border-gray-100"
                       >
                         <Utensils size={14} />
                         {lang === 'en' ? 'Book' : 'Đặt bàn'}
-                      </button>
+                      </Link>
                     </div>
                   </motion.div>
                 </Link>
@@ -159,17 +151,6 @@ export default function ProjectsPage() {
           )}
         </motion.div>
       </div>
-
-      {selectedProject && (
-        <BookingModal 
-          isOpen={isBookingOpen}
-          onClose={() => setIsBookingOpen(false)}
-          project={{
-            id: selectedProject.id,
-            client: selectedProject.client
-          }}
-        />
-      )}
     </main>
   );
 }
