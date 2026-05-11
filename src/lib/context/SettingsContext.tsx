@@ -53,7 +53,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             acc[curr.key] = curr.value;
             return acc;
           }, {});
-          setSettings({ ...formatted, loading: false });
+          setSettings((prev: any) => ({ ...prev, ...formatted, loading: false }));
         } else {
           setSettings((prev: any) => ({ ...prev, loading: false }));
         }
