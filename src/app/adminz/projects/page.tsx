@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { Plus, Edit3, Trash2, ExternalLink } from "lucide-react";
+import { Plus, Edit3, Trash2, ExternalLink, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import DeleteProjectButton from "./DeleteProjectButton";
 
