@@ -56,7 +56,13 @@ export default async function ProjectsCMSPage() {
               projects.map((project) => (
                 <tr key={project.id} className="hover:bg-gray-50/50 transition-colors">
                   <td className="px-6 py-4 flex items-center gap-4">
-                    <img src={project.image_url} className="w-16 h-12 rounded-lg object-cover" alt="" />
+                    {project.image_url ? (
+                      <img src={project.image_url} className="w-16 h-12 rounded-lg object-cover" alt="" />
+                    ) : (
+                      <div className="w-16 h-12 rounded-lg bg-gray-100 flex items-center justify-center text-gray-300">
+                        <ImageIcon size={18} />
+                      </div>
+                    )}
                     <div>
                       <div className="font-bold text-gray-900">{project.client}</div>
                       <div className="text-sm text-gray-500 max-w-xs truncate">{project.title_vi}</div>

@@ -424,8 +424,12 @@ export default function MediaExplorer({ onSelect }: { onSelect?: (url: string) =
                     {asset.type === 'folder' ? (
                       <Folder className="w-12 h-12 text-amber-400 fill-amber-400/20" />
                     ) : (
-                      <div className="w-full h-full rounded-lg overflow-hidden bg-gray-50">
-                        <img src={asset.url || ""} className="w-full h-full object-cover" alt={asset.name} />
+                      <div className="w-full h-full rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center">
+                        {asset.url ? (
+                          <img src={asset.url} className="w-full h-full object-cover" alt={asset.name} />
+                        ) : (
+                          <ImageIcon className="w-8 h-8 text-gray-200" />
+                        )}
                       </div>
                     )}
                     <span className="text-[11px] font-bold text-gray-700 text-center truncate w-full px-1">

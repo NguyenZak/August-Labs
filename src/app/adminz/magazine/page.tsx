@@ -127,8 +127,12 @@ export default function MagazineCMS() {
                   <tr key={post.id} className="hover:bg-gray-50/50 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-gray-100">
-                          <img src={post.image_url} alt="" className="w-full h-full object-cover" />
+                        <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-gray-100 flex items-center justify-center">
+                          {post.image_url ? (
+                            <img src={post.image_url} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <Sparkles className="w-6 h-6 text-gray-300" />
+                          )}
                         </div>
                         <div>
                           <p className="font-bold text-gray-900 line-clamp-1">{post.title_vi}</p>

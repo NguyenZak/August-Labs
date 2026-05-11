@@ -154,8 +154,12 @@ export default async function PortalDashboard() {
             {recentProjects && recentProjects.length > 0 ? (
               recentProjects.map((project) => (
                 <div key={project.id} className="flex items-center gap-4 p-2 rounded-2xl hover:bg-gray-50 transition-all group">
-                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 shrink-0">
-                    <img src={project.image_url} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 shrink-0 flex items-center justify-center">
+                    {project.image_url ? (
+                      <img src={project.image_url} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    ) : (
+                      <Briefcase className="w-6 h-6 text-gray-300" />
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-gray-900 truncate">{project.title}</p>
