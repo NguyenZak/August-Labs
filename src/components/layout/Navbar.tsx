@@ -31,16 +31,16 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="relative z-20 flex items-center group">
+        <Link href="/" className="relative z-30 flex items-center shrink-0 group">
           {general.logo_url ? (
             <img 
               src={general.logo_url} 
               alt={general.agency_name} 
-              className="h-10 w-auto object-contain"
+              className="h-8 md:h-10 w-auto object-contain block"
             />
           ) : (
-            <div className="w-10 h-10 rounded-lg bg-gradient-vibrant flex items-center justify-center">
-              <span className="text-white font-bold text-lg">A</span>
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-vibrant flex items-center justify-center">
+              <span className="text-white font-bold text-base md:text-lg">A</span>
             </div>
           )}
         </Link>
