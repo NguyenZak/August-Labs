@@ -167,6 +167,25 @@ export default function BookingPortalPage() {
                 )}
               </div>
             </div>
+
+            {project.google_maps_embed && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 }}
+                className="mt-8 w-full aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl"
+              >
+                <iframe
+                  src={project.google_maps_embed}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </div>

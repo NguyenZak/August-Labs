@@ -27,6 +27,7 @@ export default function NewProjectPage() {
     address: "",
     phone_number: "",
     opening_hours: "",
+    google_maps_embed: "",
     menu_images: [] as string[]
   });
 
@@ -176,6 +177,19 @@ export default function NewProjectPage() {
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-700">Giờ hoạt động</label>
                 <input name="opening_hours" value={formData.opening_hours} onChange={handleChange} placeholder="10:00 - 22:00" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
+              </div>
+            <div className="grid grid-cols-1 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Mã nhúng Google Maps (Embed URL)</label>
+                <textarea 
+                  name="google_maps_embed" 
+                  value={formData.google_maps_embed} 
+                  onChange={handleChange} 
+                  placeholder="https://www.google.com/maps/embed?pb=..." 
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-xs font-mono"
+                  rows={2}
+                />
+                <p className="text-[10px] text-gray-400">Gợi ý: Chỉ lấy phần src trong mã nhúng <iframe> của Google Maps.</p>
               </div>
             </div>
 

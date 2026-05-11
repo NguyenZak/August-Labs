@@ -49,6 +49,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
     address: project.address || "",
     phone_number: project.phone_number || "",
     opening_hours: project.opening_hours || "",
+    google_maps_embed: project.google_maps_embed || "",
     menu_images: project.menu_images || []
   });
 
@@ -322,7 +323,20 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                 <input name="opening_hours" value={formData.opening_hours} onChange={handleChange} placeholder="10:00 - 22:00" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
               </div>
             </div>
-
+            <div className="grid grid-cols-1 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Mã nhúng Google Maps (Embed URL)</label>
+                <textarea 
+                  name="google_maps_embed" 
+                  value={formData.google_maps_embed} 
+                  onChange={handleChange} 
+                  placeholder="https://www.google.com/maps/embed?pb=..." 
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-xs font-mono"
+                  rows={2}
+                />
+                <p className="text-[10px] text-gray-400">Gợi ý: Chỉ lấy phần src trong mã nhúng <iframe> của Google Maps.</p>
+              </div>
+            </div>
             <div className="pt-4 space-y-4">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-semibold text-gray-700">Hình ảnh dự án *</label>
