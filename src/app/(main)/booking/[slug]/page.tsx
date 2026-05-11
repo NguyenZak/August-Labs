@@ -40,6 +40,30 @@ export default function BookingPortalPage() {
     note: ""
   });
 
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [quickDates, setQuickDates] = useState<any[]>([]);
+
+  useEffect(() => {
+    const dates = [];
+    const now = new Date();
+    for (let i = 0; i < 10; i++) {
+      const date = new Date(now);
+      date.setDate(now.getDate() + i);
+      
+      const dayName = date.toLocaleDateString('vi-VN', { weekday: 'short' });
+      const dayNum = date.getDate();
+      const monthNum = date.getMonth() + 1;
+      const fullDate = date.toISOString().split('T')[0];
+      
+      dates.push({
+        label: `${dayName}, ${dayNum}/${monthNum}`,
+        value: fullDate,
+        isToday: i === 0
+      });
+    }
+    setQuickDates(dates);
+  }, []);
+
   useEffect(() => {
     const fetchProject = async () => {
       const supabase = createClient();
@@ -218,23 +242,85 @@ export default function BookingPortalPage() {
                     <div className="space-y-6 pt-4">
                       <h3 className="text-xs font-bold text-pink-500 uppercase tracking-widest border-b border-gray-100 pb-2">Chi tiết đặt chỗ</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="group space-y-2">
-                          <label className="text-sm font-bold text-gray-400 group-focus-within:text-pink-500 transition-colors">Ngày đến *</label>
-                          <div className="relative">
-                            <Calendar className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-pink-500 transition-colors" size={20} />
-                            <input 
-                              required
-                              type="date" 
-                              min={new Date().toISOString().split('T')[0]}
-                              className="w-full pl-8 pr-4 py-4 border-b-2 border-gray-100 focus:border-pink-500 bg-transparent transition-all outline-none font-medium"
-                              value={formData.booking_date}
-                              onChange={(e) => setFormData({...formData, booking_date: e.target.value})}
-                            />
+                        <div className="space-y-4">
+                          <label className="text-sm font-bold text-gray-400">Chọn ngày đến *</label>
+                          
+                          <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
+                            {quickDates.map((date) => (
+                              <button
+                                key={date.value}
+                                type="button"
+                                onClick={() => {
+                                  setFormData({ ...formData, booking_date: date.value });
+                                  setShowDatePicker(false);
+                                }}
+                                className={`px-4 py-3 rounded-2xl text-sm font-bold border transition-all ${
+                                  formData.booking_date === date.value && !showDatePicker
+                                    ? "bg-pink-500 border-pink-500 text-white shadow-lg shadow-pink-200"
+                                    : "bg-gray-50 border-gray-100 text-gray-600 hover:border-pink-200"
+                                }`}
+                              >
+                                <div className="text-[10px] uppercase opacity-60 mb-0.5">{date.isToday ? 'Hôm nay' : date.label.split(',')[0]}</div>
+                                <div>{date.label.split(',')[1]}</div>
+                              </button>
+                            ))}
+                            
+                            <button
+                              type="button"
+                              onClick={() => setShowDatePicker(true)}
+                              className={`px-4 py-3 rounded-2xl text-sm font-bold border transition-all flex flex-col items-center justify-center min-w-[80px] ${
+                                showDatePicker
+                                  ? "bg-pink-500 border-pink-500 text-white shadow-lg shadow-pink-200"
+                                  : "bg-gray-50 border-gray-100 text-gray-600 hover:border-pink-200"
+                              }`}
+                            >
+                              <Calendar size={14} className="mb-1" />
+                              <span className="text-[10px] uppercase">Lịch khác</span>
+                            </button>
                           </div>
+
+                          {showDatePicker && (
+                            <motion.div 
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="relative group mt-4"
+                            >
+                              <Calendar className="absolute left-0 top-1/2 -translate-y-1/2 text-pink-500" size={20} />
+                              <input 
+                                required
+                                type="date" 
+                                min={new Date().toISOString().split('T')[0]}
+                                className="w-full pl-8 pr-4 py-4 border-b-2 border-pink-500 bg-transparent transition-all outline-none font-medium text-xl"
+                                value={formData.booking_date}
+                                onChange={(e) => setFormData({...formData, booking_date: e.target.value})}
+                              />
+                            </motion.div>
+                          )}
                         </div>
-                        <div className="group space-y-2">
-                          <label className="text-sm font-bold text-gray-400 group-focus-within:text-pink-500 transition-colors">Giờ đến *</label>
-                          <div className="relative">
+                        <div className="space-y-4">
+                          <label className="text-sm font-bold text-gray-400">Chọn giờ đến *</label>
+                          
+                          <div className="flex overflow-x-auto pb-2 gap-2 custom-scrollbar no-scrollbar">
+                            {["10:00", "11:00", "12:00", "18:00", "19:00", "20:00", "21:00"].map((time) => (
+                              <button
+                                key={time}
+                                type="button"
+                                onClick={() => {
+                                  setFormData({ ...formData, booking_time: time });
+                                  // We don't hide the custom picker here, just set the value
+                                }}
+                                className={`px-5 py-3 rounded-2xl text-sm font-bold border transition-all whitespace-nowrap ${
+                                  formData.booking_time === time
+                                    ? "bg-pink-500 border-pink-500 text-white shadow-lg shadow-pink-200"
+                                    : "bg-gray-50 border-gray-100 text-gray-600 hover:border-pink-200"
+                                }`}
+                              >
+                                {time}
+                              </button>
+                            ))}
+                          </div>
+
+                          <div className="relative group">
                             <Clock className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-pink-500 transition-colors" size={20} />
                             <input 
                               required
@@ -331,6 +417,13 @@ export default function BookingPortalPage() {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #e1e1e1;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </main>
