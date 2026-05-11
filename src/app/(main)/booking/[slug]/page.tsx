@@ -359,7 +359,6 @@ export default function BookingPortalPage() {
                             />
                           </div>
                         </div>
-                      </div>
 
                       <div className="group space-y-2">
                         <label className="text-sm font-bold text-gray-400 group-focus-within:text-pink-500 transition-colors">Số lượng khách</label>
