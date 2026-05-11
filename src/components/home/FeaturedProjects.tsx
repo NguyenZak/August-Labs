@@ -63,31 +63,33 @@ export default function FeaturedProjects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="group cursor-pointer"
+              className="group"
             >
-              <div className={`relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6 ${project.color}`}>
-                <img 
-                  src={project.image} 
-                  alt={project.client} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-                <div className="absolute top-6 left-6 right-6 flex justify-between items-start">
-                  <div className="bg-white/90 backdrop-blur px-4 py-2 rounded-full text-xs font-bold text-gray-900 shadow-sm">
-                    {project.client}
-                  </div>
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg transform translate-y-2 group-hover:translate-y-0">
-                    <ArrowUpRight className="text-gray-900" />
+              <Link href={`/projects/${project.id === 'miyako' ? 'miyako-sushi' : project.id}`} className="block">
+                <div className={`relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6 ${project.color}`}>
+                  <img 
+                    src={project.image} 
+                    alt={project.client} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                  <div className="absolute top-6 left-6 right-6 flex justify-between items-start">
+                    <div className="bg-white/90 backdrop-blur px-4 py-2 rounded-full text-xs font-bold text-gray-900 shadow-sm">
+                      {project.client}
+                    </div>
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-lg transform translate-y-2 group-hover:translate-y-0">
+                      <ArrowUpRight className="text-gray-900" />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
               <div className="flex items-start justify-between">
-                <div className="flex-1">
+                <Link href={`/projects/${project.id === 'miyako' ? 'miyako-sushi' : project.id}`} className="flex-1">
                   <p className="text-sm text-gray-500 font-medium mb-2">{project.category}</p>
                   <h3 className="text-2xl font-headline text-gray-900 group-hover:text-pink-500 transition-colors">
                     {project.title}
                   </h3>
-                </div>
+                </Link>
                 <Link
                   href={`/booking/${project.id === 'miyako' ? 'miyako-sushi' : project.id}`}
                   className="mt-1 flex items-center gap-2 bg-gray-50 text-gray-900 px-4 py-2 rounded-full text-xs font-bold hover:bg-pink-500 hover:text-white transition-all transform active:scale-95 border border-gray-100"

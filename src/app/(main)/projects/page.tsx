@@ -88,15 +88,16 @@ export default function ProjectsPage() {
           ) : (
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, index) => (
-                <Link key={project.id} href={`/projects/${project.slug}`}>
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                    className="group cursor-pointer"
-                  >
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="group"
+                >
+                  <Link href={`/projects/${project.slug}`} className="block">
                     <div className={`relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6 ${project.bg_color || 'bg-gray-100'}`}>
                       {project.image_url ? (
                         <img 
@@ -128,24 +129,24 @@ export default function ProjectsPage() {
                         </div>
                       </div>
                     </div>
+                  </Link>
 
-                    <div className="px-2 flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="text-sm text-pink-500 font-semibold mb-2">{project.category}</p>
-                        <h3 className="text-2xl font-headline text-gray-900 group-hover:text-pink-500 transition-colors">
-                          {lang === 'en' ? project.title_en : project.title_vi}
-                        </h3>
-                      </div>
-                      <Link
-                        href={`/booking/${project.slug}`}
-                        className="mt-1 flex items-center gap-2 bg-gray-50 text-gray-900 px-4 py-2 rounded-full text-xs font-bold hover:bg-pink-500 hover:text-white transition-all transform active:scale-95 border border-gray-100"
-                      >
-                        <Utensils size={14} />
-                        {lang === 'en' ? 'Book' : 'Đặt bàn'}
-                      </Link>
-                    </div>
-                  </motion.div>
-                </Link>
+                  <div className="px-2 flex items-start justify-between">
+                    <Link href={`/projects/${project.slug}`} className="flex-1">
+                      <p className="text-sm text-pink-500 font-semibold mb-2">{project.category}</p>
+                      <h3 className="text-2xl font-headline text-gray-900 group-hover:text-pink-500 transition-colors">
+                        {lang === 'en' ? project.title_en : project.title_vi}
+                      </h3>
+                    </Link>
+                    <Link
+                      href={`/booking/${project.slug}`}
+                      className="mt-1 flex items-center gap-2 bg-gray-50 text-gray-900 px-4 py-2 rounded-full text-xs font-bold hover:bg-pink-500 hover:text-white transition-all transform active:scale-95 border border-gray-100"
+                    >
+                      <Utensils size={14} />
+                      {lang === 'en' ? 'Book' : 'Đặt bàn'}
+                    </Link>
+                  </div>
+                </motion.div>
               ))}
             </AnimatePresence>
           )}
