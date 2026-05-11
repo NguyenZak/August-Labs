@@ -178,6 +178,8 @@ export default function NewProjectPage() {
                 <label className="text-sm font-semibold text-gray-700">Giờ hoạt động</label>
                 <input name="opening_hours" value={formData.opening_hours} onChange={handleChange} placeholder="10:00 - 22:00" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
               </div>
+            </div>
+
             <div className="grid grid-cols-1 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-700">Mã nhúng Google Maps (Embed URL)</label>
