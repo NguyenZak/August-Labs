@@ -183,7 +183,7 @@ export default function BookingPortalPage() {
                   allowFullScreen={true}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                />
+                ></iframe>
               </motion.div>
             )}
           </motion.div>
