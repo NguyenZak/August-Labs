@@ -92,11 +92,7 @@ export default function Footer() {
                     alt={general.agency_name} 
                     className="h-6 w-auto object-contain opacity-80"
                   />
-                ) : (
-                  <div className="w-6 h-6 rounded bg-gradient-vibrant flex items-center justify-center text-white font-bold text-[10px]">
-                    A
-                  </div>
-                )
+                ) : null
               ) : (
                 <div className="w-6 h-6 rounded bg-gray-100 animate-pulse" />
               )}

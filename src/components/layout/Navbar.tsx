@@ -39,11 +39,7 @@ export default function Navbar() {
                 alt={general.agency_name} 
                 className="h-8 md:h-10 w-auto object-contain block"
               />
-            ) : (
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-vibrant flex items-center justify-center">
-                <span className="text-white font-bold text-base md:text-lg">A</span>
-              </div>
-            )
+            ) : null
           ) : (
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gray-100 animate-pulse" />
           )}
