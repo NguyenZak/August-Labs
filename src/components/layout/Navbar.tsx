@@ -6,12 +6,14 @@ import { useState } from "react";
 import { Menu, X, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useSettings } from "@/lib/context/SettingsContext";
 
 export default function Navbar() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t, lang, setLang } = useLanguage();
+  const { general } = useSettings();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 20);
@@ -29,12 +31,20 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="relative z-20 flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-vibrant flex items-center justify-center">
-            <span className="text-white font-bold text-sm">A</span>
-          </div>
+        <Link href="/" className="relative z-20 flex items-center gap-3 group">
+          {general.logo_url ? (
+            <img 
+              src={general.logo_url} 
+              alt={general.agency_name} 
+              className="h-8 w-auto object-contain"
+            />
+          ) : (
+            <div className="w-8 h-8 rounded-lg bg-gradient-vibrant flex items-center justify-center">
+              <span className="text-white font-bold text-sm">A</span>
+            </div>
+          )}
           <span className="text-xl font-bold tracking-tight text-gray-900">
-            August Agency
+            {general.agency_name || "August Agency"}
           </span>
         </Link>
 

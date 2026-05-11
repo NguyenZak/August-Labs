@@ -9,6 +9,9 @@ interface SettingsContextType {
     email: string;
     phone: string;
     address: string;
+    logo_url: string;
+    footer_logo_url: string;
+    favicon_url: string;
   };
   social: {
     facebook: string;
@@ -27,7 +30,15 @@ const SettingsContext = createContext<SettingsContextType | undefined>(undefined
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [settings, setSettings] = useState<any>({
-    general: { agency_name: "August Agency", email: "hello@augustagency.com", phone: "", address: "" },
+    general: { 
+      agency_name: "August Agency", 
+      email: "hello@augustagency.com", 
+      phone: "", 
+      address: "",
+      logo_url: "",
+      footer_logo_url: "",
+      favicon_url: ""
+    },
     social: { facebook: "", instagram: "", linkedin: "", youtube: "" },
     seo: { meta_title: "", meta_description: "" },
     loading: true
