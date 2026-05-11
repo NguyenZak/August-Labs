@@ -6,11 +6,39 @@ import { ArrowLeft, Loader2, Download, Share2 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useToast } from "@/context/ToastContext";
 
 export default function ProjectMenuPage({ params }: { params: { slug: string } }) {
   const [project, setProject] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { lang } = useLanguage();
+  const { toast } = useToast();
+
+  const handleShare = async () => {
+    const shareData = {
+      title: `${project?.client || 'Menu'} - August Agency`,
+      text: lang === 'en' 
+        ? `Check out the menu for ${project?.client}` 
+        : `Xem thực đơn của ${project?.client}`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast(
+          lang === 'en' ? 'Link copied to clipboard!' : 'Đã sao chép liên kết vào bộ nhớ tạm!',
+          "success"
+        );
+      }
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        console.error("Error sharing:", err);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +97,10 @@ export default function ProjectMenuPage({ params }: { params: { slug: string } }
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 hover:bg-gray-200 transition-all">
+            <button 
+              onClick={handleShare}
+              className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 hover:bg-gray-200 transition-all"
+            >
               <Share2 size={18} />
             </button>
           </div>

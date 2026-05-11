@@ -5,42 +5,48 @@ import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { useSettings } from "@/lib/context/SettingsContext";
 
+import { usePathname } from "next/navigation";
+
 export default function Footer() {
   const { t } = useLanguage();
-  const { general } = useSettings();
+  const { general, loading } = useSettings();
+  const pathname = usePathname();
+  const isBookingPage = pathname?.includes("/booking/");
 
   return (
     <>
       {/* Vibrant Pre-Footer CTA */}
-      <section className="bg-gradient-vibrant py-24 px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto"
-        >
-          <p className="text-white/80 font-medium text-sm tracking-widest uppercase mb-4">
-            {t("footer.ctaSub")}
-          </p>
-          <h2 className="text-4xl md:text-5xl font-headline text-white mb-10">
-            {t("footer.ctaTitle")}
-          </h2>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/contact"
-              className="px-8 py-3.5 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-50 transition-colors w-full sm:w-auto"
-            >
-              {t("footer.btnStart")}
-            </Link>
-            <Link
-              href="/projects"
-              className="px-8 py-3.5 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-50 transition-colors w-full sm:w-auto"
-            >
-              {t("footer.btnWork")}
-            </Link>
-          </div>
-        </motion.div>
-      </section>
+      {!isBookingPage && (
+        <section className="bg-gradient-vibrant py-24 px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto"
+          >
+            <p className="text-white/80 font-medium text-sm tracking-widest uppercase mb-4">
+              {t("footer.ctaSub")}
+            </p>
+            <h2 className="text-4xl md:text-5xl font-headline text-white mb-10">
+              {t("footer.ctaTitle")}
+            </h2>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/contact"
+                className="px-8 py-3.5 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-50 transition-colors w-full sm:w-auto"
+              >
+                {t("footer.btnStart")}
+              </Link>
+              <Link
+                href="/projects"
+                className="px-8 py-3.5 bg-white text-gray-900 font-bold rounded-full hover:bg-gray-50 transition-colors w-full sm:w-auto"
+              >
+                {t("footer.btnWork")}
+              </Link>
+            </div>
+          </motion.div>
+        </section>
+      )}
 
       {/* Main Footer */}
       <footer className="bg-white pt-16 pb-8 border-t border-gray-100">
@@ -85,15 +91,15 @@ export default function Footer() {
 
           <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-100 text-sm text-gray-500">
             <div className="flex items-center gap-3 mb-4 md:mb-0">
-              {!useSettings().loading ? (
-                general.footer_logo_url ? (
-                  <img 
-                    src={general.footer_logo_url} 
-                    alt={general.agency_name} 
-                    className="h-6 w-auto object-contain opacity-80"
-                  />
-                ) : null
-              ) : (
+              {general.footer_logo_url ? (
+                <img 
+                  src={general.footer_logo_url} 
+                  alt={general.agency_name} 
+                  className="h-6 w-auto object-contain opacity-80 block shrink-0"
+                  style={{ minWidth: '1px' }}
+                  loading="lazy"
+                />
+              ) : !loading ? null : (
                 <div className="w-6 h-6 rounded bg-gray-100 animate-pulse" />
               )}
               <span>© {new Date().getFullYear()} {t("footer.copyright")}</span>

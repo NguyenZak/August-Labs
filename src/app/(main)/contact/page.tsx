@@ -8,16 +8,32 @@ import { submitLead } from "@/app/actions/leads";
 import { useSettings } from "@/lib/context/SettingsContext";
 
 export default function Contact() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { general } = useSettings();
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  
+  const validatePhone = (phone: string) => {
+    if (!phone) return true;
+    const phoneRegex = /^(0|84|\+84)(3|5|7|8|9)([0-9]{8})$/;
+    if (!phoneRegex.test(phone.replace(/\s/g, ""))) {
+      setPhoneError(lang === 'vi' ? "Số điện thoại không hợp lệ." : "Invalid phone number.");
+      return false;
+    }
+    setPhoneError("");
+    return true;
+  };
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMsg("");
+    setPhoneError("");
+
 
     const formData = new FormData(e.currentTarget);
     const leadData = {
@@ -29,6 +45,13 @@ export default function Contact() {
       budget: formData.get("budget") as string,
       message: formData.get("message") as string
     };
+
+    if (!validatePhone(leadData.phone)) {
+      setIsSubmitting(false);
+      return;
+    }
+
+
 
     try {
       const result = await submitLead(leadData);
@@ -142,8 +165,20 @@ export default function Contact() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-gray-700">Số điện thoại *</label>
-                      <input name="phone" required type="tel" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 transition-colors bg-gray-50/50" />
+                      <input 
+                        name="phone" 
+                        required 
+                        type="tel" 
+                        onBlur={(e) => validatePhone(e.target.value)}
+                        onChange={() => {
+                          if (phoneError) setPhoneError("");
+                        }}
+                        className={`w-full px-4 py-3 rounded-xl border transition-colors bg-gray-50/50 ${phoneError ? 'border-red-500 focus:border-red-500' : 'border-gray-200 focus:border-pink-500'}`} 
+                      />
+
+                      {phoneError && <p className="text-red-500 text-xs mt-1 font-medium">{phoneError}</p>}
                     </div>
+
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-gray-700">{t("pageContact.formBrand")}</label>
                       <input name="brand" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 transition-colors bg-gray-50/50" />

@@ -37,10 +37,27 @@ import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { SettingsProvider } from "@/lib/context/SettingsContext";
 
-export const metadata: Metadata = {
-  title: "August Agency | Premium Digital Experiences",
-  description: "A premium creative powerhouse elevating brands through cutting-edge design, strategic marketing, and state-of-the-art technology.",
-};
+import { getAllSettings } from "@/app/actions/settings";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getAllSettings();
+  const formatted = settings.reduce((acc: any, curr: any) => {
+    acc[curr.key] = curr.value;
+    return acc;
+  }, {});
+
+  const general = formatted.general || {};
+  const seo = formatted.seo || {};
+
+  return {
+    title: seo.meta_title || `${general.agency_name || 'August Agency'} | Premium Digital Experiences`,
+    description: seo.meta_description || 'A premium creative powerhouse elevating brands through cutting-edge design, strategic marketing, and state-of-the-art technology.',
+    icons: {
+      icon: general.favicon_url || '/favicon.ico',
+      apple: general.favicon_url || '/favicon.ico',
+    }
+  };
+}
 
 export default function RootLayout({
   children,

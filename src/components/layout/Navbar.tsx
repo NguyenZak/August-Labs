@@ -13,7 +13,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t, lang, setLang } = useLanguage();
-  const { general } = useSettings();
+  const { general, loading } = useSettings();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 20);
@@ -31,16 +31,19 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="relative z-30 flex items-center shrink-0 group min-w-[40px] min-h-[40px]">
-          {!useSettings().loading ? (
-            general.logo_url ? (
-              <img 
-                src={general.logo_url} 
-                alt={general.agency_name} 
-                style={{ width: 'auto' }}
-                className="h-8 md:h-10 max-w-[200px] object-contain block shrink-0"
-              />
-            ) : null
+        <Link href="/" className="relative z-30 flex items-center shrink-0 group min-w-[40px]">
+          {general.logo_url ? (
+            <img 
+              src={general.logo_url} 
+              alt={general.agency_name} 
+              className="h-8 md:h-10 w-auto max-w-[200px] object-contain block shrink-0"
+              style={{ minWidth: '1px' }}
+              loading="eager"
+            />
+          ) : !loading ? (
+            <span className="font-bold text-xl text-gray-900 uppercase tracking-tighter">
+              {general.agency_name}
+            </span>
           ) : (
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gray-100 animate-pulse" />
           )}
@@ -111,7 +114,20 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
+          <div className="pt-4 border-t border-gray-100 mt-2">
+            <button
+              onClick={() => {
+                setLang(lang === "en" ? "vi" : "en");
+                setIsMobileMenuOpen(false);
+              }}
+              className="flex items-center gap-2 text-base font-medium text-gray-900 uppercase"
+            >
+              <Globe size={20} className="text-pink-500" />
+              <span>{lang === "en" ? "Tiếng Việt" : "English"}</span>
+            </button>
+          </div>
         </div>
+
       )}
     </motion.header>
   );

@@ -4,9 +4,25 @@ import { motion } from "framer-motion";
 import { BarChart3, ChefHat, TrendingUp } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getSettings } from "@/app/actions/settings";
 
 export default function About() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const [content, setContent] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const data = await getSettings("about_page");
+      if (data) setContent(data);
+    };
+    fetchContent();
+  }, []);
+
+  // Helper to get translated field
+  const getField = (section: string, field: string, fallbackKey: string) => {
+    return content?.[section]?.[`${field}_${lang}`] || t(fallbackKey);
+  };
 
   return (
     <main className="min-h-screen bg-white pb-24">
@@ -19,16 +35,18 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="text-5xl md:text-7xl font-headline tracking-tight text-gray-900 mb-6"
           >
-            {t("pageAbout.heroTitle")} <span className="text-gradient-vibrant">{t("pageAbout.heroHighlight")}</span>
+            {getField("hero", "title", "pageAbout.heroTitle")} <span className="text-gradient-vibrant">{getField("hero", "highlight", "pageAbout.heroHighlight")}</span>
           </motion.h1>
+
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto"
           >
-            {t("pageAbout.heroDesc")}
+            {getField("hero", "desc", "pageAbout.heroDesc")}
           </motion.p>
+
         </div>
       </section>
 
@@ -41,8 +59,9 @@ export default function About() {
             viewport={{ once: true }}
             className="text-pink-500 font-semibold text-sm uppercase tracking-wider mb-6"
           >
-            {t("pageAbout.missionTitle")}
+            {getField("mission", "title", "pageAbout.missionTitle")}
           </motion.p>
+
           <motion.h2 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -50,8 +69,9 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="text-3xl md:text-5xl font-headline text-gray-900 leading-tight"
           >
-            "{t("pageAbout.missionDesc")}"
+            "{getField("mission", "desc", "pageAbout.missionDesc")}"
           </motion.h2>
+
         </div>
       </section>
 
@@ -71,19 +91,21 @@ export default function About() {
             >
               <div className="relative aspect-[4/5] rounded-[40px] overflow-hidden border border-gray-800">
                 <img 
-                  src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1974&auto=format&fit=crop" 
-                  alt={t("pageAbout.founderName")} 
+                  src={content?.founder?.image_url || "https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1974&auto=format&fit=crop"} 
+                  alt={getField("founder", "name", "pageAbout.founderName")} 
                   className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700"
                 />
+
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-white font-headline text-2xl">{t("pageAbout.founderName")}</p>
-                      <p className="text-gray-300 text-sm">{t("pageAbout.founderRole")}</p>
+                      <p className="text-white font-headline text-2xl">{getField("founder", "name", "pageAbout.founderName")}</p>
+                      <p className="text-gray-300 text-sm">{getField("founder", "role", "pageAbout.founderRole")}</p>
                     </div>
+
                     <Link 
-                      href="https://www.facebook.com/nguyenzakk" 
+                      href={content?.founder?.connect_url || "https://www.facebook.com/nguyenzakk"} 
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-500 transition-colors"
@@ -91,6 +113,7 @@ export default function About() {
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                     </Link>
+
                   </div>
                 </div>
               </div>
@@ -105,15 +128,16 @@ export default function About() {
               className="flex-1"
             >
               <p className="text-pink-500 font-semibold text-sm uppercase tracking-wider mb-4">
-                {t("pageAbout.founderTag")}
+                {getField("founder", "tag", "pageAbout.founderTag")}
               </p>
               <h2 className="text-4xl md:text-6xl font-headline mb-8">
                 Data meets <br />
                 <span className="text-gradient-vibrant">Hospitality.</span>
               </h2>
               <p className="text-gray-300 text-lg leading-relaxed mb-8">
-                {t("pageAbout.founderBio")}
+                {getField("founder", "bio", "pageAbout.founderBio")}
               </p>
+
               <div className="flex gap-4 items-center">
                 <div className="bg-gray-800 rounded-2xl p-4 text-center min-w-[120px]">
                   <p className="text-3xl font-headline text-white mb-1">10+</p>
@@ -148,9 +172,11 @@ export default function About() {
               <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6">
                 <BarChart3 size={24} />
               </div>
-              <h3 className="text-2xl font-headline text-gray-900 mb-3">{t("pageAbout.val1Title")}</h3>
+              <h3 className="text-2xl font-headline text-gray-900 mb-3">
+                {content?.values?.[0]?.[`title_${lang}`] || t("pageAbout.val1Title")}
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                {t("pageAbout.val1Desc")}
+                {content?.values?.[0]?.[`desc_${lang}`] || t("pageAbout.val1Desc")}
               </p>
             </motion.div>
 
@@ -164,9 +190,11 @@ export default function About() {
               <div className="w-14 h-14 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center mb-6">
                 <ChefHat size={24} />
               </div>
-              <h3 className="text-2xl font-headline text-gray-900 mb-3">{t("pageAbout.val2Title")}</h3>
+              <h3 className="text-2xl font-headline text-gray-900 mb-3">
+                {content?.values?.[1]?.[`title_${lang}`] || t("pageAbout.val2Title")}
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                {t("pageAbout.val2Desc")}
+                {content?.values?.[1]?.[`desc_${lang}`] || t("pageAbout.val2Desc")}
               </p>
             </motion.div>
 
@@ -180,10 +208,13 @@ export default function About() {
               <div className="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center mb-6">
                 <TrendingUp size={24} />
               </div>
-              <h3 className="text-2xl font-headline text-gray-900 mb-3">{t("pageAbout.val3Title")}</h3>
+              <h3 className="text-2xl font-headline text-gray-900 mb-3">
+                {content?.values?.[2]?.[`title_${lang}`] || t("pageAbout.val3Title")}
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                {t("pageAbout.val3Desc")}
+                {content?.values?.[2]?.[`desc_${lang}`] || t("pageAbout.val3Desc")}
               </p>
+
             </motion.div>
 
           </div>
