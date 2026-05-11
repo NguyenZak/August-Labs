@@ -46,6 +46,9 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
     stat3_label_en: project.stat3_label_en || "",
     stat3_label_vi: project.stat3_label_vi || "",
     booking_url: project.booking_url || "",
+    address: project.address || "",
+    phone_number: project.phone_number || "",
+    opening_hours: project.opening_hours || "",
     menu_images: project.menu_images || []
   });
 
@@ -302,6 +305,21 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-700">Link Đặt bàn (Booking URL)</label>
                 <input name="booking_url" value={formData.booking_url} onChange={handleChange} placeholder="https://..." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Số điện thoại quán</label>
+                <input name="phone_number" value={formData.phone_number} onChange={handleChange} placeholder="028 ..." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Địa chỉ quán</label>
+                <input name="address" value={formData.address} onChange={handleChange} placeholder="123 Nguyễn Huệ, Quận 1..." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Giờ hoạt động</label>
+                <input name="opening_hours" value={formData.opening_hours} onChange={handleChange} placeholder="10:00 - 22:00" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-1 bg-gray-50/50" />
               </div>
             </div>
 

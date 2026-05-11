@@ -145,14 +145,26 @@ export default function BookingPortalPage() {
             <h1 className="text-5xl md:text-8xl font-headline text-white leading-none mb-6">
               {project.client}
             </h1>
-            <div className="flex flex-wrap gap-6 text-white/60 text-sm">
-              <div className="flex items-center gap-2">
-                <MapPin size={16} className="text-pink-500" />
-                <span>Ho Chi Minh City, VN</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Globe size={16} className="text-pink-500" />
-                <span>Open Daily: 10:00 - 22:00</span>
+            <div className="flex flex-col gap-4 text-white/60 text-sm">
+              {project.address && (
+                <div className="flex items-start gap-2">
+                  <MapPin size={16} className="text-pink-500 mt-0.5 shrink-0" />
+                  <span>{project.address}</span>
+                </div>
+              )}
+              <div className="flex flex-wrap gap-x-6 gap-y-4">
+                {project.opening_hours && (
+                  <div className="flex items-center gap-2">
+                    <Clock size={16} className="text-pink-500" />
+                    <span>Open: {project.opening_hours}</span>
+                  </div>
+                )}
+                {project.phone_number && (
+                  <div className="flex items-center gap-2">
+                    <Phone size={16} className="text-pink-500" />
+                    <span>{project.phone_number}</span>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
