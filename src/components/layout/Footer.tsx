@@ -85,16 +85,20 @@ export default function Footer() {
 
           <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-100 text-sm text-gray-500">
             <div className="flex items-center gap-3 mb-4 md:mb-0">
-              {general.footer_logo_url ? (
-                <img 
-                  src={general.footer_logo_url} 
-                  alt={general.agency_name} 
-                  className="h-6 w-auto object-contain opacity-80"
-                />
+              {!useSettings().loading ? (
+                general.footer_logo_url ? (
+                  <img 
+                    src={general.footer_logo_url} 
+                    alt={general.agency_name} 
+                    className="h-6 w-auto object-contain opacity-80"
+                  />
+                ) : (
+                  <div className="w-6 h-6 rounded bg-gradient-vibrant flex items-center justify-center text-white font-bold text-[10px]">
+                    A
+                  </div>
+                )
               ) : (
-                <div className="w-6 h-6 rounded bg-gradient-vibrant flex items-center justify-center text-white font-bold text-[10px]">
-                  A
-                </div>
+                <div className="w-6 h-6 rounded bg-gray-100 animate-pulse" />
               )}
               <span>© {new Date().getFullYear()} {t("footer.copyright")}</span>
             </div>
