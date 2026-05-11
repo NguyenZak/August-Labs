@@ -67,11 +67,13 @@ export default function FeaturedProjects() {
             >
               <Link href={`/projects/${project.id === 'miyako' ? 'miyako-sushi' : project.id}`} className="block">
                 <div className={`relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6 ${project.color}`}>
-                  <img 
-                    src={project.image} 
-                    alt={project.client} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+                  {project.image && (
+                    <img 
+                      src={project.image} 
+                      alt={project.client} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
                   <div className="absolute top-6 left-6 right-6 flex justify-between items-start">
                     <div className="bg-white/90 backdrop-blur px-4 py-2 rounded-full text-xs font-bold text-gray-900 shadow-sm">

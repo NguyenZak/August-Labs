@@ -121,12 +121,14 @@ export default function BookingPortalPage() {
   return (
     <main className="min-h-screen bg-gray-950 relative flex flex-col md:flex-row overflow-hidden">
       {/* Left side: Immersive Brand Visual */}
-      <div className="relative w-full md:w-1/2 h-[40vh] md:h-screen overflow-hidden">
-        <img 
-          src={project.image_url} 
-          alt={project.client}
-          className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom"
-        />
+      <div className="relative w-full md:w-1/2 h-[40vh] md:h-screen overflow-hidden bg-gray-900">
+        {project.image_url && (
+          <img 
+            src={project.image_url} 
+            alt={project.client}
+            className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent md:bg-gradient-to-r" />
         
         <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-20">
