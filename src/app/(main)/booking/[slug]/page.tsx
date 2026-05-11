@@ -486,6 +486,14 @@ export default function BookingPortalPage() {
                             
                             <button 
                               type="button"
+                              onClick={() => scroll(dateScrollRef, 'left')}
+                              className="absolute -left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover/scroll:opacity-100 transition-opacity z-10 hidden md:flex border border-gray-100"
+                            >
+                              <ChevronLeft size={16} />
+                            </button>
+                            
+                            <button 
+                              type="button"
                               onClick={() => scroll(dateScrollRef, 'right')}
                               className="absolute -right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover/scroll:opacity-100 transition-opacity z-10 hidden md:flex border border-gray-100"
                             >
@@ -550,6 +558,13 @@ export default function BookingPortalPage() {
                                 </div>
                                 <button 
                                   type="button"
+                                  onClick={() => scroll(lunchScrollRef, 'left')}
+                                  className="absolute -left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover/scroll:opacity-100 transition-opacity z-10 hidden md:flex border border-gray-100"
+                                >
+                                  <ChevronLeft size={16} />
+                                </button>
+                                <button 
+                                  type="button"
                                   onClick={() => scroll(lunchScrollRef, 'right')}
                                   className="absolute -right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover/scroll:opacity-100 transition-opacity z-10 hidden md:flex border border-gray-100"
                                 >
@@ -589,6 +604,13 @@ export default function BookingPortalPage() {
                                     );
                                   })}
                                 </div>
+                                <button 
+                                  type="button"
+                                  onClick={() => scroll(dinnerScrollRef, 'left')}
+                                  className="absolute -left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover/scroll:opacity-100 transition-opacity z-10 hidden md:flex border border-gray-100"
+                                >
+                                  <ChevronLeft size={16} />
+                                </button>
                                 <button 
                                   type="button"
                                   onClick={() => scroll(dinnerScrollRef, 'right')}
