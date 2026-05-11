@@ -31,21 +31,18 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="relative z-20 flex items-center gap-3 group">
+        <Link href="/" className="relative z-20 flex items-center group">
           {general.logo_url ? (
             <img 
               src={general.logo_url} 
               alt={general.agency_name} 
-              className="h-8 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
           ) : (
-            <div className="w-8 h-8 rounded-lg bg-gradient-vibrant flex items-center justify-center">
-              <span className="text-white font-bold text-sm">A</span>
+            <div className="w-10 h-10 rounded-lg bg-gradient-vibrant flex items-center justify-center">
+              <span className="text-white font-bold text-lg">A</span>
             </div>
           )}
-          <span className="text-xl font-bold tracking-tight text-gray-900">
-            {general.agency_name || "August Agency"}
-          </span>
         </Link>
 
         {/* Desktop Navigation */}
