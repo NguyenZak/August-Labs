@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /adminz/
+Disallow: /api/
+
+Sitemap: https://augustagency.vn/sitemap.xml

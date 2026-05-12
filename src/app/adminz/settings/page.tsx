@@ -14,7 +14,11 @@ import {
   Link2,
   Loader2,
   CheckCircle2,
-  Image as ImageIcon
+  Image as ImageIcon,
+  ChevronRight,
+  Search,
+  ExternalLink,
+  Shield
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ImageUpload from "@/components/admin/ImageUpload";
@@ -34,7 +38,20 @@ export default function SettingsPage() {
       favicon_url: ""
     },
     social: { facebook: "", instagram: "", linkedin: "", youtube: "" },
-    seo: { meta_title: "", meta_description: "" }
+    seo: { 
+      meta_title: "", 
+      meta_description: "",
+      keywords: "",
+      og_image: "",
+      google_verification: "",
+      google_analytics: "",
+      facebook_pixel: ""
+    },
+    domain: {
+      site_url: "https://augustagency.vn",
+      ssl_enabled: true,
+      force_https: true
+    }
   });
 
   useEffect(() => {
@@ -76,8 +93,9 @@ export default function SettingsPage() {
 
   const tabs = [
     { id: "general", name: "Thông tin Chung", icon: SettingsIcon },
+    { id: "domain", name: "Tên miền & SSL", icon: Globe },
+    { id: "seo", name: "SEO & Google", icon: Search },
     { id: "social", name: "Mạng xã hội", icon: Share2 },
-    { id: "seo", name: "SEO & Google", icon: Globe },
     { id: "security", name: "Bảo mật", icon: ShieldCheck },
   ];
 
@@ -273,44 +291,212 @@ export default function SettingsPage() {
                 </div>
               )}
 
-              {activeTab === "seo" && (
-                <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-gray-900">SEO & Meta Tags</h3>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700">Tiêu đề Trang chủ</label>
-                      <input 
-                        type="text"
-                        value={settings.seo.meta_title}
-                        onChange={(e) => updateField("seo", "meta_title", e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700">Mô tả Trang chủ</label>
-                      <textarea 
-                        rows={4}
-                        value={settings.seo.meta_description}
-                        onChange={(e) => updateField("seo", "meta_description", e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none resize-none"
-                      ></textarea>
-                    </div>
-                  </div>
-                  <div className="pt-6 border-t border-gray-50 flex justify-end">
+            {activeTab === "seo" && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-8"
+              >
+                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold text-gray-900">Tối ưu hóa Tìm kiếm (SEO)</h3>
                     <button 
-                      type="button"
                       onClick={() => handleSave("seo")}
                       disabled={saving}
-                      className="flex items-center gap-2 px-8 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all disabled:opacity-50"
+                      className="flex items-center gap-2 bg-pink-500 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-pink-600 transition-all disabled:opacity-50"
                     >
-                      {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={18} />}
-                      Lưu cấu hình SEO
+                      {saving ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
+                      Lưu thay đổi
                     </button>
                   </div>
-                </div>
-              )}
 
-              {activeTab === "security" && (
+                  <div className="grid grid-cols-1 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-gray-700">Meta Title (Tiêu đề SEO)</label>
+                      <input 
+                        type="text" 
+                        value={settings.seo.meta_title}
+                        onChange={(e) => updateField("seo", "meta_title", e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 outline-none transition-all"
+                        placeholder="VD: August Agency | Creative Digital Studio"
+                      />
+                      <p className="text-xs text-gray-400">Độ dài khuyến nghị: 50-60 ký tự. ({settings.seo.meta_title?.length || 0}/60)</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-gray-700">Meta Description (Mô tả SEO)</label>
+                      <textarea 
+                        rows={3}
+                        value={settings.seo.meta_description}
+                        onChange={(e) => updateField("seo", "meta_description", e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 outline-none transition-all resize-none"
+                        placeholder="Mô tả ngắn về agency của bạn cho công cụ tìm kiếm..."
+                      />
+                      <p className="text-xs text-gray-400">Độ dài khuyến nghị: 150-160 ký tự. ({settings.seo.meta_description?.length || 0}/160)</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-gray-700">Keywords (Từ khóa)</label>
+                      <input 
+                        type="text" 
+                        value={settings.seo.keywords}
+                        onChange={(e) => updateField("seo", "keywords", e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 outline-none transition-all"
+                        placeholder="branding, web design, digital marketing..."
+                      />
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t border-gray-50">
+                      <h4 className="font-bold text-gray-900 text-sm uppercase tracking-wider">Hình ảnh khi chia sẻ (OG Image)</h4>
+                      <ImageUpload 
+                        value={settings.seo.og_image}
+                        onChange={(url) => updateField("seo", "og_image", url)}
+                        label="Tải lên ảnh 1200x630px"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-50">
+                      <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700">Google Search Console Tag</label>
+                        <input 
+                          type="text" 
+                          value={settings.seo.google_verification}
+                          onChange={(e) => updateField("seo", "google_verification", e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 outline-none transition-all"
+                          placeholder="google-site-verification=..."
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700">Google Analytics ID</label>
+                        <input 
+                          type="text" 
+                          value={settings.seo.google_analytics}
+                          onChange={(e) => updateField("seo", "google_analytics", e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 outline-none transition-all"
+                          placeholder="G-XXXXXXXXXX"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Google Preview */}
+                <div className="bg-gray-50 p-8 rounded-3xl border border-dashed border-gray-200">
+                  <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Xem trước trên Google</h3>
+                  <div className="max-w-xl bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
+                      https://augustagency.vn <ChevronRight size={10} />
+                    </div>
+                    <div className="text-xl text-[#1a0dab] hover:underline cursor-pointer mb-1 truncate">
+                      {settings.seo.meta_title || "August Agency | Premium Digital Experiences"}
+                    </div>
+                    <div className="text-sm text-[#4d5156] line-clamp-2 leading-relaxed">
+                      {settings.seo.meta_description || "A premium creative powerhouse elevating brands through cutting-edge design, strategic marketing, and state-of-the-art technology."}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+              {activeTab === "domain" && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-8"
+              >
+                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold text-gray-900">Quản lý Tên miền</h3>
+                    <button 
+                      onClick={() => handleSave("domain")}
+                      disabled={saving}
+                      className="flex items-center gap-2 bg-pink-500 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-pink-600 transition-all disabled:opacity-50"
+                    >
+                      {saving ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
+                      Lưu cấu hình
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="p-6 bg-blue-50 rounded-2xl border border-blue-100 flex items-start gap-4">
+                      <div className="p-3 bg-blue-500 text-white rounded-xl">
+                        <Globe size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-blue-900">Tên miền chính</h4>
+                        <p className="text-sm text-blue-700 mt-1">Đây là địa chỉ URL chính thức của website bạn.</p>
+                        <div className="mt-4 flex items-center gap-2 bg-white p-2 rounded-lg border border-blue-200">
+                          <input 
+                            type="text" 
+                            value={settings.domain.site_url}
+                            onChange={(e) => updateField("domain", "site_url", e.target.value)}
+                            className="flex-1 bg-transparent border-none outline-none text-sm font-medium px-2"
+                          />
+                          <a href={settings.domain.site_url} target="_blank" className="p-1.5 hover:bg-gray-100 rounded-md text-gray-400">
+                            <ExternalLink size={14} />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="p-6 bg-green-50 rounded-2xl border border-green-100 flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 bg-green-500 text-white rounded-xl">
+                            <Shield size={20} />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-green-900">Chứng chỉ SSL</h4>
+                            <p className="text-xs text-green-700">Đã kích hoạt bảo mật HTTPS</p>
+                          </div>
+                        </div>
+                        <div className="w-12 h-6 bg-green-500 rounded-full relative">
+                          <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm" />
+                        </div>
+                      </div>
+
+                      <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between opacity-50 cursor-not-allowed">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 bg-gray-400 text-white rounded-xl">
+                            <Link2 size={20} />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-900">Chuyển hướng (Redirects)</h4>
+                            <p className="text-xs text-gray-500">Sắp ra mắt trong phiên bản tới</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-900 text-white p-8 rounded-3xl shadow-xl">
+                  <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                    <ShieldCheck className="text-green-400" size={20} />
+                    Cấu hình DNS khuyến nghị
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center py-3 border-b border-white/10">
+                      <span className="text-gray-400 text-sm">Type</span>
+                      <span className="text-gray-400 text-sm">Host</span>
+                      <span className="text-gray-400 text-sm">Value</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-mono text-xs text-blue-400">A</span>
+                      <span className="font-mono text-xs">@</span>
+                      <span className="font-mono text-xs">76.76.21.21 (Vercel)</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="font-mono text-xs text-blue-400">CNAME</span>
+                      <span className="font-mono text-xs">www</span>
+                      <span className="font-mono text-xs">cname.vercel-dns.com</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === "security" && (
                 <div className="space-y-6">
                   <h3 className="text-xl font-bold text-gray-900">Bảo mật tài khoản</h3>
                   <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 flex gap-4">

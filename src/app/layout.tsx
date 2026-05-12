@@ -39,6 +39,7 @@ import { SettingsProvider } from "@/lib/context/SettingsContext";
 
 import { getAllSettings } from "@/app/actions/settings";
 import AnalyticsTracker from "@/components/layout/AnalyticsTracker";
+import SchemaOrg from "@/components/seo/SchemaOrg";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getAllSettings();
@@ -53,10 +54,38 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: seo.meta_title || `${general.agency_name || 'August Agency'} | Premium Digital Experiences`,
     description: seo.meta_description || 'A premium creative powerhouse elevating brands through cutting-edge design, strategic marketing, and state-of-the-art technology.',
+    metadataBase: new URL('https://augustagency.vn'),
+    alternates: {
+      canonical: '/',
+    },
+    openGraph: {
+      title: seo.meta_title || general.agency_name,
+      description: seo.meta_description,
+      url: 'https://augustagency.vn',
+      siteName: general.agency_name,
+      images: [
+        {
+          url: seo.og_image || '/og-image.jpg',
+          width: 1200,
+          height: 630,
+        },
+      ],
+      locale: 'vi_VN',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seo.meta_title || general.agency_name,
+      description: seo.meta_description,
+      images: [seo.og_image || '/og-image.jpg'],
+    },
     icons: {
       icon: general.favicon_url || '/favicon.ico',
       apple: general.favicon_url || '/favicon.ico',
-    }
+    },
+    verification: {
+      google: 'i_5utJJ097svrvKKKZpjqyKhVwiM_4mmEf2AirbYU7o',
+    },
   };
 }
 
@@ -73,6 +102,7 @@ export default function RootLayout({
       <body className={`${instagramSans.className} min-h-full flex flex-col bg-background text-foreground`}>
         <SettingsProvider>
           <AnalyticsTracker />
+          <SchemaOrg />
           <LanguageProvider>
             <ToastProvider>
               {children}
