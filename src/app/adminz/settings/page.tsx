@@ -48,7 +48,7 @@ export default function SettingsPage() {
       facebook_pixel: ""
     },
     domain: {
-      site_url: "https://augustagency.vn",
+      site_url: "https://viz.io.vn",
       ssl_enabled: true,
       force_https: true
     }
@@ -385,7 +385,7 @@ export default function SettingsPage() {
                   <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Xem trước trên Google</h3>
                   <div className="max-w-xl bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-                      https://augustagency.vn <ChevronRight size={10} />
+                      https://viz.io.vn <ChevronRight size={10} />
                     </div>
                     <div className="text-xl text-[#1a0dab] hover:underline cursor-pointer mb-1 truncate">
                       {settings.seo.meta_title || "August Agency | Premium Digital Experiences"}

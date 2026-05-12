@@ -54,14 +54,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: seo.meta_title || `${general.agency_name || 'August Agency'} | Premium Digital Experiences`,
     description: seo.meta_description || 'A premium creative powerhouse elevating brands through cutting-edge design, strategic marketing, and state-of-the-art technology.',
-    metadataBase: new URL('https://augustagency.vn'),
+    metadataBase: new URL('https://viz.io.vn'),
     alternates: {
       canonical: '/',
     },
     openGraph: {
       title: seo.meta_title || general.agency_name,
       description: seo.meta_description,
-      url: 'https://augustagency.vn',
+      url: 'https://viz.io.vn',
       siteName: general.agency_name,
       images: [
         {
