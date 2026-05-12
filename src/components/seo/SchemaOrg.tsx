@@ -3,13 +3,13 @@
 import { useSettings } from "@/lib/context/SettingsContext";
 
 export default function SchemaOrg() {
-  const { general, seo } = useSettings();
+  const { general, social } = useSettings();
   
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": general?.agency_name || "August Agency",
-    "url": "https://augustagency.vn", // Replace with real domain if available
+    "url": "https://viz.io.vn",
     "logo": general?.logo_url,
     "contactPoint": {
       "@type": "ContactPoint",
@@ -17,9 +17,10 @@ export default function SchemaOrg() {
       "contactType": "customer service"
     },
     "sameAs": [
-      general?.instagram_url,
-      general?.facebook_url,
-      general?.linkedin_url
+      social?.instagram,
+      social?.facebook,
+      social?.linkedin,
+      social?.youtube,
     ].filter(Boolean)
   };
 
