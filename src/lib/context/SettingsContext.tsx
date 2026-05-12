@@ -12,6 +12,7 @@ interface SettingsContextType {
     logo_url: string;
     footer_logo_url: string;
     favicon_url: string;
+    apple_touch_icon: string;
   };
   social: {
     facebook: string;
@@ -37,7 +38,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       address: "",
       logo_url: "",
       footer_logo_url: "",
-      favicon_url: ""
+      favicon_url: "",
+      apple_touch_icon: ""
     },
     social: { facebook: "", instagram: "", linkedin: "", youtube: "" },
     seo: { meta_title: "", meta_description: "" },

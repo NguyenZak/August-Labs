@@ -35,7 +35,8 @@ export default function SettingsPage() {
       address: "",
       logo_url: "",
       footer_logo_url: "",
-      favicon_url: ""
+      favicon_url: "",
+      apple_touch_icon: ""
     },
     social: { facebook: "", instagram: "", linkedin: "", youtube: "" },
     seo: { 
@@ -193,7 +194,7 @@ export default function SettingsPage() {
                   {/* Branding Section */}
                   <div className="space-y-6 pt-8 border-t border-gray-50">
                     <h3 className="text-xl font-bold text-gray-900">Thương hiệu (Branding)</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                       <div className="space-y-4">
                         <label className="text-sm font-semibold text-gray-700">Logo chính</label>
                         <ImageUpload 
@@ -215,6 +216,14 @@ export default function SettingsPage() {
                         <ImageUpload 
                           value={settings.general.favicon_url}
                           onChange={(url) => updateField("general", "favicon_url", url)}
+                          folder="branding"
+                        />
+                      </div>
+                      <div className="space-y-4">
+                        <label className="text-sm font-semibold text-gray-700">Apple Touch Icon <span className="text-xs text-gray-400 font-normal">(180×180px)</span></label>
+                        <ImageUpload 
+                          value={settings.general.apple_touch_icon}
+                          onChange={(url) => updateField("general", "apple_touch_icon", url)}
                           folder="branding"
                         />
                       </div>

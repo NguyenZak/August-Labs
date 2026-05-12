@@ -81,7 +81,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     icons: {
       icon: general.favicon_url || '/favicon.ico',
-      apple: general.favicon_url || '/favicon.ico',
+      apple: general.apple_touch_icon || general.favicon_url || '/favicon.ico',
     },
     verification: {
       google: 'i_5utJJ097svrvKKKZpjqyKhVwiM_4mmEf2AirbYU7o',
