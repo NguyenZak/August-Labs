@@ -7,6 +7,7 @@ import { Save, ArrowLeft, Loader2, Trash2, Sparkles } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import ImageUpload from "@/components/admin/ImageUpload";
+import SEOPanel from "@/components/admin/SEOPanel";
 import Link from "next/link";
 
 interface EditProjectFormProps {
@@ -19,7 +20,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isAiGenerating, setIsAiGenerating] = useState(false);
-  const [activeTab, setActiveTab] = useState<"basic" | "details">("basic");
+  const [activeTab, setActiveTab] = useState<"basic" | "details" | "seo">("basic");
   const { toast } = useToast();
   
   const [formData, setFormData] = useState({
@@ -50,7 +51,16 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
     phone_number: project.phone_number || "",
     opening_hours: project.opening_hours || "",
     google_maps_embed: project.google_maps_embed || "",
-    menu_images: project.menu_images || []
+    menu_images: project.menu_images || [],
+    seo_title: project.seo_title || "",
+    seo_description: project.seo_description || "",
+    seo_keywords: project.seo_keywords || [],
+    og_title: project.og_title || "",
+    og_description: project.og_description || "",
+    og_image: project.og_image || "",
+    canonical_url: project.canonical_url || "",
+    no_index: project.no_index || false,
+    no_follow: project.no_follow || false,
   });
 
   const handleAddMenuImage = (url: string) => {
@@ -248,7 +258,15 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
         >
           Nội dung chi tiết
         </button>
+        <button 
+          type="button"
+          onClick={() => setActiveTab("seo")}
+          className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'seo' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+        >
+          Tối ưu SEO
+        </button>
       </div>
+
 
       <form onSubmit={handleSave} className="bg-white p-8 rounded-[24px] border border-gray-100 shadow-sm space-y-8">
         {activeTab === "basic" ? (
@@ -377,7 +395,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               </div>
             </div>
           </>
-        ) : (
+        ) : activeTab === "details" ? (
           <>
             <div className="space-y-6">
               <h3 className="text-lg font-bold text-gray-900 border-b pb-2">1. Thách thức (The Challenge)</h3>
@@ -490,7 +508,18 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               <p className="text-xs text-gray-400 italic">Gợi ý: Bạn nên upload ảnh Menu theo đúng thứ tự trang (Trang 1, Trang 2...).</p>
             </div>
           </>
+        ) : (
+          <SEOPanel 
+            data={formData}
+            onChange={(seoData) => setFormData(prev => ({ ...prev, ...seoData }))}
+            baseUrl="https://viz.io.vn/projects"
+            slug={formData.slug}
+            defaultTitle={`${formData.client} | ${formData.title_vi}`}
+            defaultDescription={formData.challenge_vi}
+            defaultImage={formData.image_url}
+          />
         )}
+
 
         <div className="pt-4 border-t border-gray-100 flex justify-end">
           <button 

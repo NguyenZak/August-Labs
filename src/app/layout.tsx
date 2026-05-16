@@ -37,9 +37,11 @@ import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { SettingsProvider } from "@/lib/context/SettingsContext";
 
+import { constructMetadata } from "@/lib/seo";
 import { getAllSettings } from "@/app/actions/settings";
 import AnalyticsTracker from "@/components/layout/AnalyticsTracker";
-import SchemaOrg from "@/components/seo/SchemaOrg";
+import JsonLd from "@/components/seo/JsonLd";
+import { generateOrganizationSchema } from "@/lib/schema";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getAllSettings();
@@ -51,58 +53,40 @@ export async function generateMetadata(): Promise<Metadata> {
   const general = formatted.general || {};
   const seo = formatted.seo || {};
 
-  return {
+  return constructMetadata({
     title: seo.meta_title || `${general.agency_name || 'August Agency'} | Premium Digital Experiences`,
     description: seo.meta_description || 'A premium creative powerhouse elevating brands through cutting-edge design, strategic marketing, and state-of-the-art technology.',
-    metadataBase: new URL('https://viz.io.vn'),
-    alternates: {
-      canonical: '/',
-    },
-    openGraph: {
-      title: seo.meta_title || general.agency_name,
-      description: seo.meta_description,
-      url: 'https://viz.io.vn',
-      siteName: general.agency_name,
-      images: [
-        {
-          url: seo.og_image || '/og-image.jpg',
-          width: 1200,
-          height: 630,
-        },
-      ],
-      locale: 'vi_VN',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: seo.meta_title || general.agency_name,
-      description: seo.meta_description,
-      images: [seo.og_image || '/og-image.jpg'],
-    },
-    icons: {
-      icon: general.favicon_url || '/favicon.ico',
-      apple: general.apple_touch_icon || general.favicon_url || '/favicon.ico',
-    },
-    verification: {
-      google: 'i_5utJJ097svrvKKKZpjqyKhVwiM_4mmEf2AirbYU7o',
-    },
-  };
+    url: '/',
+    seo: {
+      seo_title: seo.meta_title,
+      seo_description: seo.meta_description,
+      og_image: seo.og_image,
+    }
+  });
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getAllSettings();
+  const formatted = settings.reduce((acc: any, curr: any) => {
+    acc[curr.key] = curr.value;
+    return acc;
+  }, {});
+
+  const organizationSchema = generateOrganizationSchema(formatted.general, formatted.social);
+
   return (
     <html
-      lang="en"
+      lang="vi"
       className={`${instagramSans.variable} ${instagramHeadline.variable} h-full antialiased`}
     >
       <body className={`${instagramSans.className} min-h-full flex flex-col bg-background text-foreground`}>
         <SettingsProvider>
           <AnalyticsTracker />
-          <SchemaOrg />
+          <JsonLd data={organizationSchema} />
           <LanguageProvider>
             <ToastProvider>
               {children}
@@ -113,3 +97,4 @@ export default function RootLayout({
     </html>
   );
 }
+

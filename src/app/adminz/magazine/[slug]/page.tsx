@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Save, ArrowLeft, Loader2, Sparkles, Send } from "lucide-react";
 import Link from "next/link";
 import ImageUpload from "@/components/admin/ImageUpload";
+import SEOPanel from "@/components/admin/SEOPanel";
 import { useToast } from "@/context/ToastContext";
 
 export default function EditPostPage({ params }: { params: { slug: string } }) {
@@ -28,7 +29,16 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
     image_url: "",
     category: "Strategy",
     author: "August Team",
-    status: "draft"
+    status: "draft",
+    seo_title: "",
+    seo_description: "",
+    seo_keywords: [] as string[],
+    og_title: "",
+    og_description: "",
+    og_image: "",
+    canonical_url: "",
+    no_index: false,
+    no_follow: false,
   });
 
   useEffect(() => {
@@ -260,6 +270,16 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
               />
             </div>
           </div>
+
+          <SEOPanel 
+            data={formData}
+            onChange={(seoData) => setFormData(prev => ({ ...prev, ...seoData }))}
+            baseUrl="https://viz.io.vn/magazine"
+            slug={formData.slug}
+            defaultTitle={formData.title_vi}
+            defaultDescription={formData.excerpt_vi}
+            defaultImage={formData.image_url}
+          />
         </div>
 
         <div className="lg:col-span-4 space-y-8">
