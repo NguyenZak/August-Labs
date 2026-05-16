@@ -23,7 +23,7 @@ export async function validateFile(file: File) {
   });
 
   if (!validation.success) {
-    const errorMsg = validation.error.errors[0]?.message || 'Invalid file';
+    const errorMsg = validation.error.issues[0]?.message || 'Invalid file';
     throw SecurityErrors.invalidInput(errorMsg);
   }
 

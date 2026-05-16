@@ -32,7 +32,7 @@ export function withSecurity(
 
       // 1. Rate Limiting
       if (rateLimitKey) {
-        const ip = req.headers.get('x-forwarded-for') || req.ip || 'anonymous';
+        const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'anonymous';
         const identifier = `${rateLimitKey}:${ip}`;
         const limitResult = await rateLimit(identifier, limit, window);
         
@@ -63,7 +63,7 @@ export function withSecurity(
             userId: user?.id,
             resourceType: 'API',
             resourceId: req.nextUrl.pathname,
-            ip: req.headers.get('x-forwarded-for') || req.ip || undefined
+            ip: req.headers.get('x-forwarded-for')?.split(',')[0] || undefined
           });
           throw SecurityErrors.forbidden();
         }
