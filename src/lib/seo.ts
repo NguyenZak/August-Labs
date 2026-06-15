@@ -21,6 +21,7 @@ interface GenerateMetadataProps {
   type?: "website" | "article";
   publishedTime?: string;
   authors?: string[];
+  favicon?: string;
 }
 
 export function constructMetadata({
@@ -32,6 +33,7 @@ export function constructMetadata({
   type = "website",
   publishedTime,
   authors,
+  favicon,
 }: GenerateMetadataProps): Metadata {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://viz.io.vn";
   const fullUrl = url.startsWith("http") ? url : `${siteUrl}${url.startsWith("/") ? "" : "/"}${url}`;
@@ -83,6 +85,13 @@ export function constructMetadata({
       title: seo?.og_title || metaTitle,
       description: seo?.og_description || metaDescription,
       images: [metaImage],
+    },
+    icons: {
+      icon: [
+        { url: favicon || '/favicon.ico', sizes: 'any' }
+      ],
+      shortcut: favicon || '/favicon.ico',
+      apple: favicon || '/favicon.ico',
     },
   };
 }

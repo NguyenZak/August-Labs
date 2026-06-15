@@ -244,7 +244,7 @@ export default function AnalyticsPage() {
               {stats?.recentVisits.map((visit: any, idx: number) => (
                 <tr key={idx} className="hover:bg-gray-50/50 transition-colors">
                   <td className="px-8 py-5 text-sm text-gray-600">
-                    {new Date(visit.created_at).toLocaleString('vi-VN')}
+                    {new Date(visit.created_at).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}
                   </td>
                   <td className="px-8 py-5">
                     <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-bold">

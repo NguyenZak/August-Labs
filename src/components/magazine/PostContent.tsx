@@ -65,7 +65,7 @@ export default function PostContent({ post }: { post: any }) {
           <div>
             <p className="text-xs text-gray-400 uppercase font-bold tracking-widest">Published</p>
             <p className="text-sm font-bold text-gray-900">
-              {new Date(post.published_at).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {
+              {new Date(post.published_at).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { timeZone: "Asia/Ho_Chi_Minh", 
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'

@@ -71,6 +71,31 @@ export default function NewProjectPage() {
     }));
   };
 
+  const [draggedMenuIndex, setDraggedMenuIndex] = useState<number | null>(null);
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedMenuIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (draggedMenuIndex === null || draggedMenuIndex === dropIndex) return;
+
+    setFormData(prev => {
+      const newImages = [...prev.menu_images];
+      const draggedItem = newImages[draggedMenuIndex];
+      newImages.splice(draggedMenuIndex, 1);
+      newImages.splice(dropIndex, 0, draggedItem);
+      return { ...prev, menu_images: newImages };
+    });
+    setDraggedMenuIndex(null);
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.client || !formData.slug) {
@@ -93,7 +118,7 @@ export default function NewProjectPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-20">
+    <div className="w-full space-y-8 pb-20">
       <div className="flex items-center gap-4">
         <Link href="/adminz/projects" className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100 text-gray-500 hover:text-gray-900 transition-colors">
           <ArrowLeft className="w-5 h-5" />
@@ -236,8 +261,15 @@ export default function NewProjectPage() {
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {formData.menu_images.map((img: string, idx: number) => (
-                  <div key={idx} className="group relative aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden border border-gray-100">
-                    <img src={img} alt={`Menu ${idx}`} className="w-full h-full object-cover" />
+                  <div 
+                    key={idx} 
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, idx)}
+                    onDragOver={(e) => handleDragOver(e, idx)}
+                    onDrop={(e) => handleDrop(e, idx)}
+                    className={`group relative aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 cursor-move ${draggedMenuIndex === idx ? 'opacity-50' : ''}`}
+                  >
+                    <img src={img} alt={`Menu ${idx}`} className="w-full h-full object-cover pointer-events-none" />
                     <button 
                       type="button"
                       onClick={() => handleRemoveMenuImage(idx)}

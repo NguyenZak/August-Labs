@@ -178,7 +178,7 @@ export default function LeadsPage() {
                     <div className="flex items-center gap-3 text-sm">
                       <Calendar size={16} className="text-pink-500" />
                       <span className="font-semibold text-gray-700">Date:</span>
-                      <span className="text-gray-600">{new Date(lead.created_at).toLocaleDateString("vi-VN")}</span>
+                      <span className="text-gray-600">{new Date(lead.created_at).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</span>
                     </div>
                   </div>
                 </div>

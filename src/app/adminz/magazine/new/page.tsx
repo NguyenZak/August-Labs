@@ -87,7 +87,9 @@ export default function NewPostPage() {
       setFormData(prev => ({ ...prev, image_url: data }));
       toast("Đã vẽ ảnh AI thành công!", "success");
     } catch (error: any) {
-      toast("Lỗi khi tạo ảnh: " + error.message, "error");
+      toast("AI không tạo được ảnh, đã chọn ảnh ngẫu nhiên từ Unsplash!", "info");
+      const randomId = Math.floor(Math.random() * 1000);
+      setFormData(prev => ({ ...prev, image_url: `https://images.unsplash.com/photo-${randomId}?q=80&w=2000&auto=format&fit=crop` }));
     } finally {
       setIsAiGenerating(false);
     }
@@ -189,14 +191,22 @@ export default function NewPostPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.slug || !formData.image_url) {
-      toast("Vui lòng nhập đầy đủ thông tin bắt buộc!", "error");
+    if (!formData.slug) {
+      toast("Vui lòng nhập đường dẫn bài viết (Slug)!", "error");
       return;
+    }
+
+    let finalImageUrl = formData.image_url;
+    if (!finalImageUrl) {
+      const randomId = Math.floor(Math.random() * 1000);
+      finalImageUrl = `https://images.unsplash.com/photo-${randomId}?q=80&w=2000&auto=format&fit=crop`;
+      setFormData(prev => ({ ...prev, image_url: finalImageUrl }));
     }
 
     setIsSaving(true);
     const supabase = createClient();
-    const { error } = await supabase.from("posts").insert([formData]);
+    const dataToSave = { ...formData, image_url: finalImageUrl };
+    const { error } = await supabase.from("posts").insert([dataToSave]);
 
     if (!error) {
       toast("Đã lưu bài viết thành công!", "success");
@@ -260,7 +270,7 @@ export default function NewPostPage() {
             {/* Title Section */}
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Tiêu đề bài viết</label>
+                <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Tiêu đề bài viết <span className="text-red-500">*</span></label>
                 <input 
                   required 
                   name={activeLang === 'vi' ? "title_vi" : "title_en"}
@@ -348,7 +358,7 @@ export default function NewPostPage() {
             <h3 className="text-lg font-bold text-gray-900">Thiết lập bài viết</h3>
             
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Đường dẫn bài viết (Slug)</label>
+              <label className="text-sm font-semibold text-gray-700">Đường dẫn bài viết (Slug) <span className="text-red-500">*</span></label>
               <input 
                 name="slug" 
                 value={formData.slug} 
@@ -383,7 +393,7 @@ export default function NewPostPage() {
 
             <div className="pt-4 space-y-4">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-gray-700">Ảnh bìa bài viết *</label>
+                <label className="text-sm font-semibold text-gray-700">Ảnh bìa bài viết <span className="text-red-500">*</span></label>
                 <button 
                   type="button"
                   onClick={handleGenerateImage}

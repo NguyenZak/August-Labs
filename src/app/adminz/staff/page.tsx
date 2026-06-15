@@ -54,7 +54,9 @@ export default function StaffPage() {
           
           console.log("Fetched Profile:", profile);
           
-          if (profile?.role === "ADMIN") {
+          const userRole = (profile?.role || user?.app_metadata?.role || user?.user_metadata?.role || "").toUpperCase();
+          
+          if (userRole === "ADMIN" || userRole === "SUPER_ADMIN") {
             setRole("ADMIN");
             await fetchMembers();
           } else {
@@ -131,9 +133,11 @@ export default function StaffPage() {
   };
 
   const getRoleBadge = (role: string) => {
-    switch (role) {
+    const upperRole = (role || "").toUpperCase();
+    switch (upperRole) {
+      case "SUPER_ADMIN":
       case "ADMIN":
-        return <span className="px-3 py-1 rounded-full bg-pink-50 text-pink-600 text-xs font-bold flex items-center gap-1.5 w-fit uppercase tracking-wider"><Shield size={12} /> Admin</span>;
+        return <span className="px-3 py-1 rounded-full bg-pink-50 text-pink-600 text-xs font-bold flex items-center gap-1.5 w-fit uppercase tracking-wider"><Shield size={12} /> {upperRole === "SUPER_ADMIN" ? "Super Admin" : "Admin"}</span>;
       case "EDITOR":
         return <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold flex items-center gap-1.5 w-fit uppercase tracking-wider"><UserCheck size={12} /> Editor</span>;
       default:

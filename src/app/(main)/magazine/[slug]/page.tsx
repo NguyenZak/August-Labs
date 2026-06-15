@@ -6,7 +6,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { generateArticleSchema } from "@/lib/schema";
 import PostContent from "@/components/magazine/PostContent";
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
   const supabase = await createClient();
   const { data: post } = await supabase
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   });
 }
 
-export default async function MagazineDetailPage({ params }: { params: { slug: string } }) {
+export default async function MagazineDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const supabase = await createClient();
   const { data: post } = await supabase

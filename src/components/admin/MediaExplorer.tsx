@@ -240,7 +240,7 @@ export default function MediaExplorer({ onSelect }: { onSelect?: (url: string) =
   );
 
   return (
-    <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm overflow-hidden min-h-[600px] flex flex-col">
+    <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm overflow-hidden min-h-[600px] h-full flex flex-col">
       {/* Header / Toolbar */}
       <div className="p-6 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4 bg-gray-50/50">
         <div className="flex items-center gap-3">
@@ -368,7 +368,7 @@ export default function MediaExplorer({ onSelect }: { onSelect?: (url: string) =
       </div>
 
       {/* Explorer Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 overflow-y-auto">
         {loading ? (
           <div className="h-full flex flex-col items-center justify-center text-gray-400 gap-4">
             <Loader2 className="w-10 h-10 animate-spin text-pink-500" />
@@ -513,7 +513,7 @@ export default function MediaExplorer({ onSelect }: { onSelect?: (url: string) =
                           </div>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-xs text-gray-400">{new Date(asset.created_at).toLocaleDateString()}</td>
+                      <td className="px-4 py-3 text-xs text-gray-400">{new Date(asset.created_at).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-2">
                            {asset.url && (

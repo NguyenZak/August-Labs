@@ -16,7 +16,8 @@ import {
   ChevronRight,
   MoreHorizontal,
   Loader2,
-  Trash2
+  Trash2,
+  Download
 } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 
@@ -25,6 +26,9 @@ export default function BookingsCMS() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [brandFilter, setBrandFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("all");
+  const [customDate, setCustomDate] = useState("");
   const { toast } = useToast();
 
   const fetchBookings = async () => {
@@ -89,9 +93,60 @@ export default function BookingsCMS() {
       b.projects?.client?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = statusFilter === "all" || b.status === statusFilter;
+    const matchesBrand = brandFilter === "all" || b.projects?.client === brandFilter;
     
-    return matchesSearch && matchesStatus;
+    let matchesDate = true;
+    if (dateFilter !== "all") {
+      const bDate = b.booking_date; 
+      const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
+      const yesterdayDate = new Date();
+      yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+      const yesterday = yesterdayDate.toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
+
+      if (dateFilter === "today") {
+        matchesDate = bDate === today;
+      } else if (dateFilter === "yesterday") {
+        matchesDate = bDate === yesterday;
+      } else if (dateFilter === "custom" && customDate) {
+        matchesDate = bDate === customDate;
+      }
+    }
+    
+    return matchesSearch && matchesStatus && matchesBrand && matchesDate;
   });
+
+  const uniqueBrands = Array.from(new Set(bookings.map(b => b.projects?.client).filter(Boolean)));
+
+  const handleExportCSV = () => {
+    const headers = ["Khách hàng", "Số điện thoại", "Thương hiệu", "Ngày đặt", "Giờ đặt", "Số khách", "Trạng thái"];
+    const csvRows = filteredBookings.map(b => {
+      const clientName = `"${b.client_name}"`;
+      const phone = `"${b.phone}"`;
+      const brand = `"${b.projects?.client || 'General'}"`;
+      const date = `"${new Date(b.booking_date).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}"`;
+      const time = `"${b.booking_time.slice(0, 5)}"`;
+      const guests = `"${b.guests}"`;
+      
+      let statusStr = "Chờ xác nhận";
+      if (b.status === 'confirmed') statusStr = "Đã xác nhận";
+      if (b.status === 'cancelled') statusStr = "Đã hủy";
+      if (b.status === 'completed') statusStr = "Hoàn thành";
+      statusStr = `"${statusStr}"`;
+
+      return [clientName, phone, brand, date, time, guests, statusStr].join(",");
+    });
+
+    const csvContent = [headers.join(","), ...csvRows].join("\n");
+    const bom = "\uFEFF";
+    const blob = new Blob([bom + csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `dat_ban_${new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" })}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -131,21 +186,64 @@ export default function BookingsCMS() {
       </div>
 
       {/* Search & Filters */}
-      <div className="flex flex-col md:flex-row items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-        <div className="relative flex-1 w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input 
-            type="text" 
-            placeholder="Tìm theo tên khách, số điện thoại hoặc thương hiệu..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-100 focus:border-pink-500 focus:ring-1 bg-gray-50/50"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+      <div className="flex flex-col gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <div className="relative flex-1 w-full">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input 
+              type="text" 
+              placeholder="Tìm theo tên khách, số điện thoại hoặc thương hiệu..."
+              className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-100 focus:border-pink-500 focus:ring-1 bg-gray-50/50"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <button 
+            onClick={handleExportCSV}
+            className="flex items-center justify-center gap-2 px-6 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors w-full md:w-auto whitespace-nowrap font-semibold shadow-sm"
+          >
+            <Download size={18} />
+            Xuất Excel
+          </button>
         </div>
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <Filter className="text-gray-400 shrink-0" size={18} />
+        
+        <div className="flex flex-wrap items-center gap-3 w-full">
+          <Filter className="text-gray-400 shrink-0 hidden md:block" size={18} />
+          
           <select 
-            className="flex-1 md:w-40 px-4 py-2 rounded-xl border border-gray-100 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-sm font-semibold"
+            className="flex-1 md:flex-none md:w-auto px-4 py-2 rounded-xl border border-gray-100 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-sm font-semibold"
+            value={brandFilter}
+            onChange={(e) => setBrandFilter(e.target.value)}
+          >
+            <option value="all">Tất cả thương hiệu</option>
+            {uniqueBrands.map((brand: any, idx) => (
+              <option key={idx} value={brand}>{brand}</option>
+            ))}
+          </select>
+
+          <div className="flex items-center gap-2 flex-1 md:flex-none">
+            <select 
+              className="w-full md:w-auto px-4 py-2 rounded-xl border border-gray-100 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-sm font-semibold"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+            >
+              <option value="all">Mọi thời điểm</option>
+              <option value="today">Hôm nay</option>
+              <option value="yesterday">Hôm qua</option>
+              <option value="custom">Ngày tuỳ chọn...</option>
+            </select>
+            {dateFilter === "custom" && (
+              <input 
+                type="date"
+                className="w-full md:w-auto px-4 py-2 rounded-xl border border-gray-100 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-sm font-semibold"
+                value={customDate}
+                onChange={(e) => setCustomDate(e.target.value)}
+              />
+            )}
+          </div>
+
+          <select 
+            className="flex-1 md:flex-none md:w-auto px-4 py-2 rounded-xl border border-gray-100 focus:border-pink-500 focus:ring-1 bg-gray-50/50 text-sm font-semibold"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -203,7 +301,7 @@ export default function BookingsCMS() {
                       <div className="flex flex-col gap-1">
                         <span className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                           <Calendar size={14} className="text-pink-500" />
-                          {new Date(booking.booking_date).toLocaleDateString("vi-VN")}
+                          {new Date(booking.booking_date).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}
                         </span>
                         <div className="flex items-center gap-4">
                           <span className="text-xs text-gray-500 flex items-center gap-1">

@@ -76,7 +76,7 @@ export default function BookingPortalPage() {
       const date = new Date(now);
       date.setDate(now.getDate() + i);
       
-      const dayName = date.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { weekday: 'short' });
+      const dayName = date.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { timeZone: "Asia/Ho_Chi_Minh",  weekday: 'short' });
 
       const dayNum = date.getDate();
       const monthNum = date.getMonth() + 1;
@@ -338,7 +338,7 @@ export default function BookingPortalPage() {
                       <div className="text-right">
                         <p className="text-pink-500 font-bold">{formData.booking_time}</p>
                         <p className="text-gray-900 text-xs font-medium">
-                          {new Date(formData.booking_date).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { 
+                          {new Date(formData.booking_date).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { timeZone: "Asia/Ho_Chi_Minh",  
                             weekday: 'long', 
                             day: 'numeric', 
                             month: 'numeric' 

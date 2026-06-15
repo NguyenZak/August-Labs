@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Globe, Image as ImageIcon, Eye, CheckCircle2, AlertCircle } from "lucide-react";
+import { Search, Globe, Image as ImageIcon, Eye, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface SEOData {
@@ -23,6 +23,7 @@ interface SEOPanelProps {
   defaultTitle: string;
   defaultDescription: string;
   defaultImage: string;
+  onGenerateSEO?: () => Promise<void>;
 }
 
 export default function SEOPanel({
@@ -32,9 +33,11 @@ export default function SEOPanel({
   slug,
   defaultTitle,
   defaultDescription,
-  defaultImage
+  defaultImage,
+  onGenerateSEO
 }: SEOPanelProps) {
   const [activeTab, setActiveTab] = useState<"google" | "social">("google");
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const metaTitle = data.seo_title || defaultTitle;
   const metaDescription = data.seo_description || defaultDescription;
@@ -61,7 +64,29 @@ export default function SEOPanel({
           <Globe className="text-blue-500" size={20} />
           Tối ưu SEO Production
         </h3>
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-xl">
+        <div className="flex items-center gap-4">
+          {onGenerateSEO && (
+            <button
+              type="button"
+              onClick={async (e) => {
+                e.preventDefault();
+                setIsGenerating(true);
+                try {
+                  await onGenerateSEO();
+                } catch (error) {
+                  console.error(error);
+                } finally {
+                  setIsGenerating(false);
+                }
+              }}
+              disabled={isGenerating}
+              className="px-4 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-pink-500 to-orange-400 text-white shadow-sm hover:opacity-90 transition-all flex items-center gap-1.5 disabled:opacity-50"
+            >
+              {isGenerating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "✨"}
+              {isGenerating ? "Đang xử lý..." : "Auto-generate AI"}
+            </button>
+          )}
+          <div className="flex gap-1 bg-gray-100 p-1 rounded-xl">
           <button 
             onClick={() => setActiveTab("google")}
             className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'google' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}
@@ -74,6 +99,7 @@ export default function SEOPanel({
           >
             Social Preview
           </button>
+        </div>
         </div>
       </div>
 

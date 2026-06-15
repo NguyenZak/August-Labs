@@ -5,7 +5,7 @@ import { constructMetadata } from "@/lib/seo";
 import JsonLd from "@/components/seo/JsonLd";
 import ProjectDetailContent from "@/components/projects/ProjectDetailContent";
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
   const supabase = await createClient();
   const { data: project } = await supabase
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   });
 }
 
-export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
+export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const supabase = await createClient();
   

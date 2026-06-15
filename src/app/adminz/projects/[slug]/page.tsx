@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import EditProjectForm from "./EditProjectForm";
 
-export default async function EditProjectPage({ params }: { params: { slug: string } }) {
+export default async function EditProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);

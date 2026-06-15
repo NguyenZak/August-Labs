@@ -101,7 +101,7 @@ export default function MagazinePage() {
                       </p>
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mt-auto pt-8 border-t border-gray-800">
                         <span className="text-gray-500 text-sm font-medium">
-                          {new Date(featuredPost.published_at).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })}
+                          {new Date(featuredPost.published_at).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { timeZone: "Asia/Ho_Chi_Minh",  month: 'long', year: 'numeric' })}
                         </span>
                         <div className="flex items-center gap-2 text-white font-bold hover:text-pink-400 transition-colors">
                           {t("pageInsights.readBtn")}
@@ -167,7 +167,7 @@ export default function MagazinePage() {
                             {lang === 'en' ? post.excerpt_en : post.excerpt_vi}
                           </p>
                           <div className="flex items-center justify-between text-xs font-medium text-gray-400 mt-auto pt-6 border-t border-gray-50">
-                            <span>{new Date(post.published_at).toLocaleDateString()}</span>
+                            <span>{new Date(post.published_at).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</span>
                             <span className="flex items-center gap-1 text-gray-900 font-bold group-hover:text-pink-500 transition-colors">
                               READ <ArrowUpRight className="w-3 h-3" />
                             </span>

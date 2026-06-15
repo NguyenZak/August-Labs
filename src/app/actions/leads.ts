@@ -51,7 +51,7 @@ export async function submitLead(formData: {
 💬 <b>Lời nhắn:</b> ${formData.message || "N/A"}
 -------------------------
 ⚠️ <b>Vui lòng gọi xác nhận khách trong 30 phút!</b>
-📅 <i>Thời gian gửi: ${new Date().toLocaleString("vi-VN")}</i>
+📅 <i>Thời gian gửi: ${new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</i>
 `;
     await sendTelegramNotification(message);
   }

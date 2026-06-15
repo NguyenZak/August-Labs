@@ -36,8 +36,9 @@ export default function Navbar() {
             <img 
               src={general.logo_url} 
               alt={general.agency_name} 
-              className="h-8 md:h-10 w-auto max-w-[200px] object-contain block shrink-0"
-              style={{ minWidth: '1px' }}
+              width={200}
+              height={40}
+              className="h-8 md:h-10 w-auto max-w-[200px] object-contain object-left block shrink-0"
               loading="eager"
             />
           ) : !loading ? (

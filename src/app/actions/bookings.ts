@@ -39,7 +39,7 @@ export async function submitBooking(formData: {
   }
 
   // Send Telegram Notification
-  const dateFormatted = new Date(formData.booking_date).toLocaleDateString('vi-VN', {
+  const dateFormatted = new Date(formData.booking_date).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", 
     weekday: 'long',
     day: 'numeric',
     month: 'numeric'
@@ -56,7 +56,7 @@ export async function submitBooking(formData: {
 📅 <b>Ngày đến:</b> ${dateFormatted}
 📝 <b>Ghi chú:</b> ${formData.note || "N/A"}
 -------------------------
-📅 <i>Thời gian gửi: ${new Date().toLocaleString("vi-VN")}</i>
+📅 <i>Thời gian gửi: ${new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</i>
 
 `;
 

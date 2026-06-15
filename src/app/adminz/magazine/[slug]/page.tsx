@@ -9,7 +9,7 @@ import ImageUpload from "@/components/admin/ImageUpload";
 import SEOPanel from "@/components/admin/SEOPanel";
 import { useToast } from "@/context/ToastContext";
 
-export default function EditPostPage({ params }: { params: { slug: string } }) {
+export default function EditPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const router = useRouter();
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
@@ -135,16 +135,24 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.slug || !formData.image_url) {
-      toast("Vui lòng nhập đầy đủ thông tin bắt buộc!", "error");
+    if (!formData.slug) {
+      toast("Vui lòng nhập đường dẫn bài viết (Slug)!", "error");
       return;
+    }
+
+    let finalImageUrl = formData.image_url;
+    if (!finalImageUrl) {
+      const randomId = Math.floor(Math.random() * 1000);
+      finalImageUrl = `https://images.unsplash.com/photo-${randomId}?q=80&w=2000&auto=format&fit=crop`;
+      setFormData(prev => ({ ...prev, image_url: finalImageUrl }));
     }
 
     setIsSaving(true);
     const supabase = createClient();
+    const dataToSave = { ...formData, image_url: finalImageUrl };
     const { error } = await supabase
       .from("posts")
-      .update(formData)
+      .update(dataToSave)
       .eq("id", postId);
 
     if (!error) {
@@ -214,7 +222,7 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Tiêu đề bài viết</label>
+                <label className="text-sm font-bold text-gray-400 uppercase tracking-widest">Tiêu đề bài viết <span className="text-red-500">*</span></label>
                 <input 
                   name={activeLang === 'vi' ? "title_vi" : "title_en"}
                   value={activeLang === 'vi' ? formData.title_vi : formData.title_en}
@@ -287,7 +295,7 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
             <h3 className="text-lg font-bold text-gray-900">Thiết lập bài viết</h3>
             
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Đường dẫn bài viết (Slug)</label>
+              <label className="text-sm font-semibold text-gray-700">Đường dẫn bài viết (Slug) <span className="text-red-500">*</span></label>
               <input 
                 name="slug" 
                 value={formData.slug} 
@@ -322,7 +330,7 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
 
             <div className="pt-4 space-y-4">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-gray-700">Ảnh bìa bài viết *</label>
+                <label className="text-sm font-semibold text-gray-700">Ảnh bìa bài viết <span className="text-red-500">*</span></label>
                 <button 
                   type="button"
                   onClick={handleGenerateImage}

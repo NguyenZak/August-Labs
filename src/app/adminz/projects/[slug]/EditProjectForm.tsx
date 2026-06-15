@@ -8,6 +8,7 @@ import { useToast } from "@/context/ToastContext";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import ImageUpload from "@/components/admin/ImageUpload";
 import SEOPanel from "@/components/admin/SEOPanel";
+import { generateSEOData } from "@/app/actions/ai";
 import Link from "next/link";
 
 interface EditProjectFormProps {
@@ -170,6 +171,31 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
       toast("Lỗi Gemini: " + error.message, "error");
     } finally {
       setIsAiGenerating(false);
+    }
+  };
+
+  const handleGenerateSEO = async () => {
+    if (!formData.client || (!formData.title_vi && !formData.title_en)) {
+      toast("Vui lòng điền tên dự án và tiêu đề trước khi dùng AI", "error");
+      return;
+    }
+    const content = `Tên dự án: ${formData.client}
+Lĩnh vực: ${formData.category}
+Tiêu đề: ${formData.title_vi || formData.title_en}
+Thách thức: ${formData.challenge_vi || formData.challenge_en}
+Chiến lược: ${formData.strategy_vi || formData.strategy_en}`;
+    
+    try {
+      const seoData = await generateSEOData(content);
+      setFormData(prev => ({
+        ...prev,
+        seo_title: seoData.seo_title || prev.seo_title,
+        seo_description: seoData.seo_description || prev.seo_description,
+        seo_keywords: seoData.seo_keywords || prev.seo_keywords
+      }));
+      toast("Đã tự động tạo thẻ SEO bằng AI thành công!", "success");
+    } catch (error) {
+      toast("Lỗi khi tạo SEO bằng AI. Vui lòng thử lại.", "error");
     }
   };
 
@@ -512,11 +538,12 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
           <SEOPanel 
             data={formData}
             onChange={(seoData) => setFormData(prev => ({ ...prev, ...seoData }))}
-            baseUrl="https://viz.io.vn/projects"
+            baseUrl="https://augustagency.vn/projects"
             slug={formData.slug}
             defaultTitle={`${formData.client} | ${formData.title_vi}`}
             defaultDescription={formData.challenge_vi}
             defaultImage={formData.image_url}
+            onGenerateSEO={handleGenerateSEO}
           />
         )}
 

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { MapPin, Clock, Phone, Maximize2, Image as ImageIcon, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default async function ProjectShowcase({ params }: { params: { slug: string } }) {
+export default async function ProjectShowcase({ params }: { params: Promise<{ slug: string }> }) {
   const cookieStore = await cookies();
   const supabase = await createClient(cookieStore);
 
@@ -17,7 +17,7 @@ export default async function ProjectShowcase({ params }: { params: { slug: stri
     const { data: subData } = await supabase
       .from("projects")
       .select("*")
-      .eq("subdomain", params.slug)
+      .eq("subdomain", (await params).slug)
       .maybeSingle();
     
     project = subData;
@@ -27,7 +27,7 @@ export default async function ProjectShowcase({ params }: { params: { slug: stri
       const { data: slugData } = await supabase
         .from("projects")
         .select("*")
-        .eq("slug", params.slug)
+        .eq("slug", (await params).slug)
         .maybeSingle();
       project = slugData;
     }

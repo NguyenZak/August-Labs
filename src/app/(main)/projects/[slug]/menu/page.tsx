@@ -8,9 +8,10 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { useToast } from "@/context/ToastContext";
 
-export default function ProjectMenuPage({ params }: { params: { slug: string } }) {
+export default function ProjectMenuPage({ params }: { params: Promise<{ slug: string }> }) {
   const [project, setProject] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [slug, setSlug] = useState<string>("");
   const { lang } = useLanguage();
   const { toast } = useToast();
 
@@ -43,6 +44,7 @@ export default function ProjectMenuPage({ params }: { params: { slug: string } }
   useEffect(() => {
     const fetchData = async () => {
       const resolvedParams = await params;
+      setSlug(resolvedParams.slug);
       const supabase = createClient();
       
       const { data: projectData } = await supabase
@@ -71,7 +73,7 @@ export default function ProjectMenuPage({ params }: { params: { slug: string } }
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center space-y-4">
         <h1 className="text-2xl font-headline">Menu not found</h1>
-        <Link href={`/projects/${params.slug}`} className="text-pink-500 font-bold">Back to Project</Link>
+        <Link href={`/projects/${slug}`} className="text-pink-500 font-bold">Back to Project</Link>
       </div>
     );
   }
@@ -97,6 +99,12 @@ export default function ProjectMenuPage({ params }: { params: { slug: string } }
           </div>
 
           <div className="flex items-center gap-2">
+            <Link 
+              href={`/booking/${project.slug}`}
+              className="flex items-center px-5 py-2.5 bg-pink-500 text-white text-xs md:text-sm font-bold rounded-full hover:bg-pink-600 shadow-lg shadow-pink-500/20 transition-all active:scale-95"
+            >
+              {lang === 'en' ? 'Book Now' : 'Đặt bàn ngay'}
+            </Link>
             <button 
               onClick={handleShare}
               className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 hover:bg-gray-200 transition-all"

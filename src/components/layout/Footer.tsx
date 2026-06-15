@@ -95,8 +95,9 @@ export default function Footer() {
                 <img 
                   src={general.footer_logo_url} 
                   alt={general.agency_name} 
-                  className="h-6 w-auto object-contain opacity-80 block shrink-0"
-                  style={{ minWidth: '1px' }}
+                  width={150}
+                  height={24}
+                  className="h-6 w-auto max-w-[150px] object-contain object-left opacity-80 block shrink-0"
                   loading="lazy"
                 />
               ) : !loading ? null : (

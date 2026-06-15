@@ -123,7 +123,7 @@ export default async function PortalDashboard() {
                   <div className="text-right">
                     <p className="text-sm font-semibold text-gray-900">{lead.service?.split(" ")[0]}</p>
                     <p className="text-xs text-gray-400 flex items-center gap-1 justify-end">
-                      <Clock size={12} /> {new Date(lead.created_at).toLocaleDateString("vi-VN")}
+                      <Clock size={12} /> {new Date(lead.created_at).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}
                     </p>
                   </div>
                 </div>

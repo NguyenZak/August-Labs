@@ -40,6 +40,7 @@ import { SettingsProvider } from "@/lib/context/SettingsContext";
 import { constructMetadata } from "@/lib/seo";
 import { getAllSettings } from "@/app/actions/settings";
 import AnalyticsTracker from "@/components/layout/AnalyticsTracker";
+import LanguageSelectorPopup from "@/components/layout/LanguageSelectorPopup";
 import JsonLd from "@/components/seo/JsonLd";
 import { generateOrganizationSchema } from "@/lib/schema";
 
@@ -57,6 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: seo.meta_title || `${general.agency_name || 'August Agency'} | Premium Digital Experiences`,
     description: seo.meta_description || 'A premium creative powerhouse elevating brands through cutting-edge design, strategic marketing, and state-of-the-art technology.',
     url: '/',
+    favicon: general.favicon_url,
     seo: {
       seo_title: seo.meta_title,
       seo_description: seo.meta_description,
@@ -89,6 +91,7 @@ export default async function RootLayout({
           <JsonLd data={organizationSchema} />
           <LanguageProvider>
             <ToastProvider>
+              <LanguageSelectorPopup />
               {children}
             </ToastProvider>
           </LanguageProvider>
