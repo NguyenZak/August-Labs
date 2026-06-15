@@ -4,11 +4,16 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
-export async function getSettings(key: string) {
-  const cookieStore = await cookies();
-  const supabase = await createClient(cookieStore);
+import { createClient as createAdminClient } from "@supabase/supabase-js";
 
-  const { data, error } = await supabase
+// Define admin client for reading public settings bypassing RLS
+const adminSupabase = createAdminClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+export async function getSettings(key: string) {
+  const { data, error } = await adminSupabase
     .from("settings")
     .select("value")
     .eq("key", key)
@@ -23,10 +28,7 @@ export async function getSettings(key: string) {
 }
 
 export async function getAllSettings() {
-  const cookieStore = await cookies();
-  const supabase = await createClient(cookieStore);
-
-  const { data, error } = await supabase
+  const { data, error } = await adminSupabase
     .from("settings")
     .select("*");
 
